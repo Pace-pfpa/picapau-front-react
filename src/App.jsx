@@ -6,7 +6,8 @@ import './styles/login.css'
 //import './App.css'
 
 function App() {
-  //const [count, setCount] = useState(0)
+  const [email, setEmail] = useState("");
+  const {password, setPassword} = useState("");
 
   return (
 
@@ -15,19 +16,27 @@ function App() {
         <div className="wrap-login">
           <form  className="login-form">
 
-            <span className="login-form-title">Super Pica-Pau</span>
+            <span className="login-form-title">SUPER PICA-PAU</span>
 
             <span className="login-form-title">
               <img src={agupng} alt="Advocacia Geral da união" />
             </span>
 
             <div className="wrap-input">
-              <input className='input' type="email" />
+              <input className='input'
+               type="email" 
+               value={email}
+               onChange={e => setEmail(e.target.value)}
+              />
               <span className="focus-input" data-placeholder="Email"></span>
             </div>
 
             <div className="wrap-input">
-              <input className='input' type="password" />
+              <input className='input' 
+              type="password"
+              value={password}
+              onChange={e => {setPassword(e.target.value)}}
+               />
               <span className="focus-input" data-placeholder="Password"></span>
             </div>
 
