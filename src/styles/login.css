@@ -198,3 +198,12 @@
     text-decoration: none;
     
 }
+
+
+.has-val + .focus-input::after{
+    top: -15px;
+}
+
+.has-val + .focus-input::before{
+    width: 100%;
+}
