@@ -2,6 +2,7 @@ import { useState } from 'react'
 import '../styles/Index.css'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
 import { Link } from 'react-router-dom'
+import agupng from '../assets/AGU.png'
 
 function Cadastro() {
   const [email, setEmail] = useState("");
@@ -13,7 +14,11 @@ function Cadastro() {
     <LayoutLoginRegister>
       <form className="login-form">
 
-        <span className="login-form-title">Cadastro</span>
+        <span className="login-form-title">Criar Conta</span>
+
+        <span className="login-form-title">
+          <img src={agupng} alt="Advocacia Geral da união" />
+        </span>
 
         <div className="wrap-input">
           <input className={name != "" ? 'has-val input' : 'input'}
