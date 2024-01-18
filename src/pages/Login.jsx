@@ -1,4 +1,6 @@
-import { useState } from 'react'
+/* eslint-disable react-hooks/rules-of-hooks */
+import { useState  } from 'react'
+import { useNavigate } from 'react-router-dom';
 import agupng from '../assets/AGU.png'
 import '../styles/Index.css'
 import { Link } from 'react-router-dom'
@@ -8,11 +10,25 @@ import { LayoutLoginRegister } from '../components/login-register/LoginRegisterI
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+    
+  function handleSubmit(event) {
+    event.preventDefault();
+  
+    // Simulação da validação de email e senha
+    if (email === "teste@email.com" && password === "123456") {
+      navigate("/triagem");
+    } else {
+      // Exiba uma mensagem de erro informando que o email ou a senha estão incorretos
+      console.error("Email ou senha incorretos");
+    }
+  }
 
   return (
 
     <LayoutLoginRegister>
-      <form className="login-form">
+      <form className="login-form" onSubmit={handleSubmit}>
 
         <span className="login-form-title">SUPER PICA-PAU</span>
 

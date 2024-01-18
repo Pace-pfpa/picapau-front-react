@@ -180,3 +180,12 @@
 .has-val + .focus-input::before{
     width: 100%;
 }
+
+.checkboxMaternidade{
+    margin-bottom: 20px;
+    color: white;
+}
+
+.labelChakput{
+    margin-left: 8px;
+}
