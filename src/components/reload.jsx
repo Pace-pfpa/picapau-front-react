@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-unused-vars
 import * as React from 'react';
-import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
 
-export default function CircularIndeterminate() {
+export default function LinearIndeterminate() {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CircularProgress />
+    <Box sx={{ width: '100%' }}>
+      <LinearProgress />
     </Box>
   );
 }

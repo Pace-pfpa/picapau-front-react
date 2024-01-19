@@ -3,26 +3,35 @@ import { useState  } from 'react'
 import { useNavigate } from 'react-router-dom';
 import agupng from '../assets/AGU.png'
 import '../styles/Index.css'
-import { Link } from 'react-router-dom'
+/* import { Link } from 'react-router-dom' */
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex'
+import axios from 'axios';
+
 
 
 export const Login = () => {
-  const [email, setEmail] = useState("");
+  const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
     
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
   
-    // Simulação da validação de email e senha
-    if (email === "teste@email.com" && password === "123456") {
-      navigate("/triagem");
-    } else {
-      // Exiba uma mensagem de erro informando que o email ou a senha estão incorretos
-      console.error("Email ou senha incorretos");
+    const data = {
+      "cpf": `${cpf}`,
+      "senha": `${password}`
     }
+    const response = await axios.post("http://localhost:3001/samir/login",data)
+    if(response.status == 200){
+      localStorage.setItem("sapiensCPF", cpf);
+      localStorage.setItem("sapiensSenha", password);
+      navigate("/triagem");
+    } else{
+      console.log('incorreto user')
+    } 
+      
+    
   }
 
   return (
@@ -37,12 +46,12 @@ export const Login = () => {
         </span>
 
         <div className="wrap-input">
-          <input className={email != "" ? 'has-val input' : 'input'}
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+          <input className={cpf != "" ? 'has-val input' : 'input'}
+            type="text"
+            value={cpf}
+            onChange={e => setCpf(e.target.value)}
           />
-          <span className="focus-input" data-placeholder="Email"></span>
+          <span className="focus-input" data-placeholder="Cpf"></span>
         </div>
 
         <div className="wrap-input">
@@ -59,13 +68,13 @@ export const Login = () => {
         </div>
 
 
-        <div className="text-center">
+        {/* <div className="text-center">
           <span className="txt1">Não possui conta?</span>
 
           <Link to="/cadastro" className="txt2">
             Criar Conta
           </Link>
-        </div>
+        </div> */}
 
       </form>
     </LayoutLoginRegister>
