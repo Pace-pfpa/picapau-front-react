@@ -1,20 +1,41 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios';
 import '../styles/Index.css'
 //import { Link } from 'react-router-dom'
 import agupng from '../assets/AGU.png'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
 import LinearIndeterminate from '../components/reload';
+import { useNavigate } from 'react-router-dom';
+
 
 
 function TriagemSapiens() {
 /*   const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState(""); */
+  const navigate = useNavigate();
   const [Etiqueta, setEtiqueta] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  
 
+  useEffect(() => {
+  verificarLogin();
+}, []);
 
+  const verificarLogin = async () => {
+    // Coloque aqui a lógica da sua verificação
+    /* const data = {
+        "cpf": `${localStorage.getItem("sapiensCPF")}`,
+        "senha": `${localStorage.getItem("sapiensSenha")}`
+      }
+      console.log(data)
+    const response = await axios.post("http://localhost:3001/samir/login",data)
+    console.log(data)
+    console.log(response) */
+    if(localStorage.getItem("sapiensCPF") == null || localStorage.getItem("sapiensSenha") == null){
+      navigate("/");
+    }
+  }
   async function handleSubmit(event) {
   event.preventDefault(); // Impede o envio padrão do formulário
   setIsLoading(true);
@@ -33,6 +54,11 @@ function TriagemSapiens() {
   console.log(response)
   setIsLoading(false);
   // Adicione aqui o código para enviar os dados ao servidor ou realizar outras ações
+}
+
+function sair(){
+  localStorage.clear()
+  navigate("/");
 }
 
   return (
@@ -83,6 +109,10 @@ function TriagemSapiens() {
 
         <div className="container-login-form-btn">
           <button className="login-form-btn">Triagem Sapiens</button>
+        </div>
+
+        <div className="container-login-form-btn">
+          <button onClick={sair}>SAIR</button>
         </div>
 
         
