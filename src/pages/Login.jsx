@@ -12,6 +12,7 @@ import axios from 'axios';
 export const Login = () => {
   const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState("");
+  const [userIncorret, setUserIncorret] = useState(false);
   const navigate = useNavigate();
 
     
@@ -22,17 +23,30 @@ export const Login = () => {
       "cpf": `${cpf}`,
       "senha": `${password}`
     }
-    const response = await axios.post("http://localhost:3001/samir/login",data)
-    if(response.status == 200){
-      localStorage.setItem("sapiensCPF", cpf);
-      localStorage.setItem("sapiensSenha", password);
-      navigate("/triagem");
-    } else{
-      console.log('incorreto user')
-    } 
+    try{
+      const response = await axios.post("http://localhost:3000/samir/login",data)
+      if(response.status == 200){
+        localStorage.setItem("sapiensCPF", cpf);
+        localStorage.setItem("sapiensSenha", password);
+        navigate("/triagem");
+      } else{
+        console.log('incorreto user')
+        setUserIncorret(true)
+      } 
+    }catch(e){
+      setUserIncorret(true)
+    }
+  
       
     
   }
+
+  const handleClick = () => {
+    if(userIncorret){
+      setUserIncorret(!userIncorret);
+    }
+    
+  };
 
   return (
 
@@ -50,6 +64,7 @@ export const Login = () => {
             type="text"
             value={cpf}
             onChange={e => setCpf(e.target.value)}
+            onFocus={e => handleClick()}
           />
           <span className="focus-input" data-placeholder="Cpf"></span>
         </div>
@@ -59,10 +74,11 @@ export const Login = () => {
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
+            onFocus={e => handleClick()}
           />
           <span className="focus-input" data-placeholder="Password"></span>
         </div>
-
+        {userIncorret && <p className='userIncorrect'>Usuário Incorreto</p>}
         <div className="container-login-form-btn">
           <button className="login-form-btn">Login</button>
         </div>

@@ -49,7 +49,7 @@ function TriagemSapiens() {
     "etiqueta": `${Etiqueta}`,
     "readDosprevAge": isChecked
   }
-  const response = await axios.post("http://localhost:3001/samir/getInformationFromSapienForSamir",data)
+  const response = await axios.post("http://localhost:3000/samir/getInformationFromSapienForSamir",data)
   
   console.log(response)
   setIsLoading(false);
