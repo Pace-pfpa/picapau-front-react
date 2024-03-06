@@ -6,7 +6,7 @@ import agupng from '../assets/AGU.png'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
 import LinearIndeterminate from '../components/reload';
 import { useNavigate } from 'react-router-dom';
-
+import {VerificaEtiqueta} from '../helps/verificaEtiqueta/';
 
 
 function TriagemSapiens() {
@@ -36,25 +36,36 @@ function TriagemSapiens() {
       navigate("/");
     }
   }
+
   async function handleSubmit(event) {
   event.preventDefault(); // Impede o envio padrão do formulário
   setIsLoading(true);
+  
   console.log("Etiqueta:", Etiqueta);
   console.log("checkbox:", isChecked);
-  const data = {
-    "login": {
-      "cpf": `${localStorage.getItem("sapiensCPF")}`,
-      "senha": `${localStorage.getItem("sapiensSenha")}`
-    },
-    "etiqueta": `${Etiqueta}`,
-    "readDosprevAge": isChecked
+  console.log("Verificaetiqueta: ", VerificaEtiqueta(Etiqueta));
+  if (VerificaEtiqueta(Etiqueta)){
+    setEtiqueta("");
+    alert("Escolha outra Etiqueta!");
+    setIsLoading(false);
   }
-  const response = await axios.post("http://localhost:3000/samir/getInformationFromSapienForSamir",data)
-  
-  console.log(response)
-  setIsLoading(false);
+  else{
+    const data = {
+      "login": {
+        "cpf": `${localStorage.getItem("sapiensCPF")}`,
+        "senha": `${localStorage.getItem("sapiensSenha")}`
+      },
+      "etiqueta": `${Etiqueta}`,
+      "readDosprevAge": isChecked
+    }
+    const response = await axios.post("http://10.191.9.26:3000/samir/getInformationFromSapienForSamir",data)
+    
+    console.log(response)
+    setIsLoading(false);
+    }
+  }  
   // Adicione aqui o código para enviar os dados ao servidor ou realizar outras ações
-}
+
 
 function sair(){
   localStorage.clear()
