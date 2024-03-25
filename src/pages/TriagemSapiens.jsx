@@ -41,29 +41,24 @@ function TriagemSapiens() {
   event.preventDefault(); // Impede o envio padrão do formulário
   setIsLoading(true);
   
-  console.log("Etiqueta:", Etiqueta);
-  console.log("checkbox:", isChecked);
-  console.log("Verificaetiqueta: ", VerificaEtiqueta(Etiqueta));
-  if (VerificaEtiqueta(Etiqueta)){
-    setEtiqueta("");
-    alert("Escolha outra Etiqueta!");
-    setIsLoading(false);
+  //console.log("Etiqueta:", Etiqueta);
+  //console.log("checkbox:", isChecked);
+  //console.log("Verificaetiqueta: ", VerificaEtiqueta(Etiqueta));
+  const data = {
+    "login": {
+      "cpf": `${localStorage.getItem("sapiensCPF")}`,
+      "senha": `${localStorage.getItem("sapiensSenha")}`
+    },
+    "etiqueta": `${Etiqueta}`,
+    "readDosprevAge": isChecked
   }
-  else{
-    const data = {
-      "login": {
-        "cpf": `${localStorage.getItem("sapiensCPF")}`,
-        "senha": `${localStorage.getItem("sapiensSenha")}`
-      },
-      "etiqueta": `${Etiqueta}`,
-      "readDosprevAge": isChecked
-    }
-    const response = await axios.post("http://10.191.9.26:3000/samir/getInformationFromSapienForSamir",data)
-    
-    console.log(response)
-    setIsLoading(false);
-    }
-  }  
+  const response = await axios.post("http://10.191.9.26:3000/samir/getInformationFromSapienForSamir",data)
+  
+  console.log(response)
+  setIsLoading(false);
+  }
+  
+ 
   // Adicione aqui o código para enviar os dados ao servidor ou realizar outras ações
 
 
