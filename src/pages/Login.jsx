@@ -20,7 +20,7 @@ export const Login = () => {
     event.preventDefault();
   
     const data = {
-      "cpf": `${cpf}`,
+      "cpf": `${cpf.replace(/\D/g, '')}`,
       "senha": `${password}`
     }
     try{
