@@ -20,11 +20,11 @@ export const Login = () => {
     event.preventDefault();
   
     const data = {
-      "cpf": `${cpf.replace(/\D/g, '')}`,
+      "cpf": `${cpf}`,
       "senha": `${password}`
     }
     try{
-      const response = await axios.post("http://localhost:3000/samir/login",data)
+      const response = await axios.post("http://localhost:3001/samir/login",data)
       if(response.status == 200){
         localStorage.setItem("sapiensCPF", cpf);
         localStorage.setItem("sapiensSenha", password);

@@ -7,6 +7,11 @@ import { LayoutLoginRegister } from '../components/login-register/LoginRegisterI
 import LinearIndeterminate from '../components/reload';
 import { useNavigate } from 'react-router-dom';
 import {VerificaEtiqueta} from '../helps/verificaEtiqueta/';
+import { io } from 'socket.io-client';
+const socket = io.connect("localhost:3030");
+import { getInformationFromSapienForSamirUseCase } from '../triagemFolder';
+
+
 
 
 function TriagemSapiens() {
@@ -41,24 +46,30 @@ function TriagemSapiens() {
   event.preventDefault(); // Impede o envio padrão do formulário
   setIsLoading(true);
   
-  //console.log("Etiqueta:", Etiqueta);
-  //console.log("checkbox:", isChecked);
-  //console.log("Verificaetiqueta: ", VerificaEtiqueta(Etiqueta));
-  const data = {
-    "login": {
-      "cpf": `${localStorage.getItem("sapiensCPF")}`,
-      "senha": `${localStorage.getItem("sapiensSenha")}`
-    },
-    "etiqueta": `${Etiqueta}`,
-    "readDosprevAge": isChecked
+  console.log("Etiqueta:", Etiqueta);
+  console.log("checkbox:", isChecked);
+  console.log("Verificaetiqueta: ", VerificaEtiqueta(Etiqueta));
+  if (VerificaEtiqueta(Etiqueta)){
+    setEtiqueta("");
+    alert("Escolha outra Etiqueta!");
+    setIsLoading(false);
   }
-  const response = await axios.post("http://10.191.9.26:3000/samir/getInformationFromSapienForSamir",data)
-  
-  console.log(response)
-  setIsLoading(false);
-  }
-  
- 
+  else{
+    const data = {
+      "login": {
+        "cpf": `${localStorage.getItem("sapiensCPF")}`,
+        "senha": `${localStorage.getItem("sapiensSenha")}`
+      },
+      /* "etiqueta": `${Etiqueta}`,
+      "readDosprevAge": isChecked */
+    }
+    //const response = await axios.post("http://localhost:3001/samir/getInformationFromSapienForSamir",data)
+    
+    console.log(data)
+    getInformationFromSapienForSamirUseCase.execute(data)
+    setIsLoading(false);
+    }
+  }  
   // Adicione aqui o código para enviar os dados ao servidor ou realizar outras ações
 
 
@@ -66,6 +77,16 @@ function sair(){
   localStorage.clear()
   navigate("/");
 }
+
+const sendMessage = () => {
+  socket.emit("send_message", {message: "Hello"})
+
+
+}
+
+socket.on("mensagem", (msg) => {
+  console.log("Mensagem recebida do servidor:", msg);
+});
 
   return (
     <LayoutLoginRegister>
@@ -120,8 +141,10 @@ function sair(){
         <div className="container-login-form-btn">
           <button onClick={sair}>SAIR</button>
         </div>
-
-        
+        <div>
+          <p>contador</p>
+        </div>
+  
         {isLoading && <LinearIndeterminate/>}
         {/* <div className="text-center">
           <span className="txt1">Já possui conta?</span>
@@ -131,7 +154,9 @@ function sair(){
           </Link>
         </div> */}
       </form>
-      
+      <div>
+          <button onClick={sendMessage}>SOCKET</button>
+        </div>
       </LayoutLoginRegister>
   )
 }
