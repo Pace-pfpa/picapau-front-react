@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import axios from 'axios';
 import '../styles/Index.css'
 //import { Link } from 'react-router-dom'
@@ -7,9 +7,16 @@ import { LayoutLoginRegister } from '../components/login-register/LoginRegisterI
 import LinearIndeterminate from '../components/reload';
 import { useNavigate } from 'react-router-dom';
 import {VerificaEtiqueta} from '../helps/verificaEtiqueta/';
-import { io } from 'socket.io-client';
-const socket = io.connect("localhost:3030");
 import { getInformationFromSapienForSamirUseCase } from '../triagemFolder';
+import { getTarefas } from '../visaoRequest/getTarefas';
+import { loginVisao } from '../visaoRequest/loginRequest';
+import { getUsuarioRequest } from '../visaoRequest/getUsuarioRequest';
+import { getInformationFromPicaPau } from '../visaoRequest/getInformationFromPicaPau';
+import { TriagemSapiensComponent } from '../components/TriagemSapiensComponent';
+import { FinalizandoTriagem } from '../components/finalizandoTriagem';
+import { IniciandoTriagem } from '../components/IniciandoTriagem';
+import { buildObjectProcess } from '../Help/BuildObjectProcess';
+import { saveProcess } from '../API/SaveProcess';
 
 
 
@@ -21,11 +28,15 @@ function TriagemSapiens() {
   const [Etiqueta, setEtiqueta] = useState("");
   const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [IsContador, setIsContador] = useState(false)
+  const stopProcessoRef = useRef(false);
+  const [inializandoTriagem, setInializandoTriagem] = useState(false)
   
 
   useEffect(() => {
   verificarLogin();
-}, []);
+  return () => verificarLogin()
+}, []);;
 
   const verificarLogin = async () => {
     // Coloque aqui a lógica da sua verificação
@@ -37,24 +48,16 @@ function TriagemSapiens() {
     const response = await axios.post("http://localhost:3001/samir/login",data)
     console.log(data)
     console.log(response) */
-    if(localStorage.getItem("sapiensCPF") == null || localStorage.getItem("sapiensSenha") == null){
+    if(localStorage.getItem("sapiensCPF") == null || localStorage.getItem("sapiensSenha") == null || localStorage.getItem("token") == null){
       navigate("/");
     }
   }
 
   async function handleSubmit(event) {
   event.preventDefault(); // Impede o envio padrão do formulário
-  setIsLoading(true);
   
-  console.log("Etiqueta:", Etiqueta);
-  console.log("checkbox:", isChecked);
-  console.log("Verificaetiqueta: ", VerificaEtiqueta(Etiqueta));
-  if (VerificaEtiqueta(Etiqueta)){
-    setEtiqueta("");
-    alert("Escolha outra Etiqueta!");
-    setIsLoading(false);
-  }
-  else{
+  
+  setInializandoTriagem(true)
     const data = {
       "login": {
         "cpf": `${localStorage.getItem("sapiensCPF")}`,
@@ -64,11 +67,65 @@ function TriagemSapiens() {
       "readDosprevAge": isChecked */
     }
     //const response = await axios.post("http://localhost:3001/samir/getInformationFromSapienForSamir",data)
-    
-    console.log(data)
-    getInformationFromSapienForSamirUseCase.execute(data)
-    setIsLoading(false);
+
+
+
+    try{
+      
+      const cookie = await loginVisao(data.login);
+      const usuario =  (await getUsuarioRequest(cookie));
+      
+ 
+       const usuario_id = `${usuario[0].id}`; 
+       let tarefas = await getTarefas(cookie, "FRODO", usuario_id);
+       setInializandoTriagem(false)
+       setIsLoading(true);
+       let VerificarSeAindExisteProcesso = true;
+       let contadorProcessos = 0;
+       while(VerificarSeAindExisteProcesso){
+         for(var i = 0; i <= tarefas.length - 1; i++){
+           if(stopProcessoRef.current){
+             console.log("saiu")
+             console.log("parou processo")
+             setIsContador(false)
+             break;
+           }
+           setIsContador(contadorProcessos+1)
+           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: "FRODO", tarefa: tarefas[i], readDosprevAge: isChecked})
+           const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
+           const saveProc = await saveProcess(objectToDataBase);
+           contadorProcessos++
+ 
+         }
+         if(stopProcessoRef.current){
+          console.log("saiu")
+          stopProcessoRef.current = false;
+          console.log("parou processo")
+          setIsContador(false)
+          break;
+        }
+
+
+         tarefas = await getTarefas(cookie, "FRODO", usuario_id);
+         if(tarefas.length == 0){
+          VerificarSeAindExisteProcesso = false;
+         }
+
+       }
+       setIsLoading(false)
+
+
+    }catch(e){
+      console.log("erro triagemk")
+      console.log(e)
     }
+    
+    
+
+
+
+    setIsContador(false);
+    
   }  
   // Adicione aqui o código para enviar os dados ao servidor ou realizar outras ações
 
@@ -78,15 +135,17 @@ function sair(){
   navigate("/");
 }
 
-const sendMessage = () => {
-  socket.emit("send_message", {message: "Hello"})
-
-
+function pararTriagem(){
+  console.log("fechou")
+  stopProcessoRef.current = true;
+  setIsLoading(false);
 }
 
-socket.on("mensagem", (msg) => {
-  console.log("Mensagem recebida do servidor:", msg);
-});
+
+
+
+
+
 
   return (
     <LayoutLoginRegister>
@@ -97,24 +156,6 @@ socket.on("mensagem", (msg) => {
         <span className="login-form-title">
           <img src={agupng} alt="Advocacia Geral da união" />
         </span>
-
-        {/* <div className="wrap-input">
-          <input className={cpf != "" ? 'has-val input' : 'input'}
-            type="text"
-            value={cpf}
-            onChange={e => setCpf(e.target.value)}
-          />
-          <span className="focus-input" data-placeholder="CPF"></span>
-        </div> */}
-
-        {/* <div className="wrap-input">
-          <input className={password != "" ? 'has-val input' : 'input'}
-            type="password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-          />
-          <span className="focus-input" data-placeholder="Senha"></span>
-        </div> */}
 
         <div className="wrap-input">
           <input className={Etiqueta != "" ? 'has-val input' : 'input'}
@@ -139,23 +180,18 @@ socket.on("mensagem", (msg) => {
         </div>
 
         <div className="container-login-form-btn">
-          <button onClick={sair}>SAIR</button>
-        </div>
-        <div>
-          <p>contador</p>
-        </div>
-  
-        {isLoading && <LinearIndeterminate/>}
-        {/* <div className="text-center">
-          <span className="txt1">Já possui conta?</span>
-
-          <Link to="/" className="txt2">
-            Acessar com Email e Senha
-          </Link>
-        </div> */}
+          <button className="botaoSair" onClick={sair}>SAIR</button>
+        </div>        
+        
       </form>
-      <div>
-          <button onClick={sendMessage}>SOCKET</button>
+      <div className='classPararTriagem'>
+          <button className='botaoPararTriagem' onClick={pararTriagem}>Parar Triagem</button>
+        </div> 
+        <div className='blocoComponenteTriagem'>
+          {stopProcessoRef.current == false && <TriagemSapiensComponent processosCount={IsContador}/>}
+          {isLoading && <LinearIndeterminate/>}
+          {stopProcessoRef.current && <FinalizandoTriagem/>}
+          {inializandoTriagem && <IniciandoTriagem/>}
         </div>
       </LayoutLoginRegister>
   )

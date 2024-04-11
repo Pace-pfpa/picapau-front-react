@@ -3,16 +3,41 @@ import '../styles/Index.css'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
 import { Link } from 'react-router-dom'
 import agupng from '../assets/AGU.png'
+import { createUser } from '../API/CreateUser';
+import { useNavigate } from 'react-router-dom';
+
 
 function Cadastro() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
+  const navigate = useNavigate();
+  const [usuarioExiste, setUsuarioExiste] = useState(false);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    try{
+      const data = {
+        "nome": name,
+        "email": email,
+        "password": password
+      }
+
+      await createUser(data);
+      navigate("/")
+    }catch(e){
+      if(e.message.trim() == "usuario ja existe"){
+        setUsuarioExiste(true)
+      }
+      console.log(e.message)
+    }
+    
+  }
 
   return (
 
     <LayoutLoginRegister>
-      <form className="login-form">
+      <form onSubmit={handleSubmit} className="login-form">
 
         <span className="login-form-title">Criar Conta</span>
 
@@ -47,6 +72,7 @@ function Cadastro() {
           <span className="focus-input" data-placeholder="Password"></span>
         </div>
 
+        {usuarioExiste && <p className='userIncorrect'>Usuário Incorreto</p>}
         <div className="container-login-form-btn">
           <button className="login-form-btn">Cadastrar</button>
         </div>

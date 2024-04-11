@@ -6,10 +6,11 @@ import '../styles/Index.css'
 /* import { Link } from 'react-router-dom' */
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex'
 import axios from 'axios';
+import { Link } from 'react-router-dom'
 
 
 
-export const Login = () => {
+export const LoginPicaPau = () => {
   const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState("");
   const [userIncorret, setUserIncorret] = useState(false);
@@ -20,15 +21,14 @@ export const Login = () => {
     event.preventDefault();
   
     const data = {
-      "cpf": `${cpf}`,
-      "senha": `${password}`
+      "email": `${cpf}`,
+      "password": `${password}`
     }
     try{
-      const response = await axios.post("http://localhost:3001/samir/login",data)
+      const response = await axios.post("http://localhost:3052/register/login",data)
       if(response.status == 200){
-        localStorage.setItem("sapiensCPF", cpf);
-        localStorage.setItem("sapiensSenha", password);
-        navigate("/triagem");
+        localStorage.setItem("token",response.data)
+        navigate("/loginSapiens");
       } else{
         console.log('incorreto user')
         setUserIncorret(true)
@@ -48,12 +48,16 @@ export const Login = () => {
     
   };
 
+  function toCadastro(){
+    navigate("/cadastro");
+  }
+
   return (
 
     <LayoutLoginRegister>
       <form className="login-form" onSubmit={handleSubmit}>
 
-        <span className="login-form-title">SUPER PICA-PAU</span>
+        <span className="login-form-title">SUPER PICAPAU</span>
 
         <span className="login-form-title">
           <img src={agupng} alt="Advocacia Geral da união" />
@@ -66,7 +70,7 @@ export const Login = () => {
             onChange={e => setCpf(e.target.value)}
             onFocus={e => handleClick()}
           />
-          <span className="focus-input" data-placeholder="Cpf"></span>
+          <span className="focus-input" data-placeholder="email"></span>
         </div>
 
         <div className="wrap-input">
@@ -93,6 +97,13 @@ export const Login = () => {
         </div> */}
 
       </form>
+      <div className="text-center">
+          <span className="txt1">Não Possui Conta?</span>
+
+          <Link to="/cadastro" className="txt2">
+            Criar Conta
+          </Link>
+        </div>
     </LayoutLoginRegister>
   )
 }

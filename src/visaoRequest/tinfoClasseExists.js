@@ -1,12 +1,12 @@
 import axios from "axios";
 
-export async function getArvoreDocumento(objetoArvoreDocumento){
+export async function tinfoClasseExist(data){
 
 
-    const UrlLogin = "http://localhost:3000/samir/getArvoreDocumentoController"
+    const UrlLogin = "http://localhost:3000/samir/getTinfoClasseExist"
 
     try{
-        const response = await axios.post(UrlLogin,objetoArvoreDocumento);
+        const response = await axios.post(UrlLogin,data);
         
         if(response.status == 200){
             return Promise.resolve(response.data);

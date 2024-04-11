@@ -1,33 +1,11 @@
-// eslint-disable-next-line no-undef
-/* const { JSDOM } = require('jsdom'); */
-/* import { getUsuarioUseCase } from '../GetUsuario'; */
 
-/* import { getTarefaUseCase } from '../GetTarefa'; */
-
-
-/* import { getArvoreDocumentoUseCase } from '../GetArvoreDocumento/index'; */
-
-/* import { getDocumentoUseCase } from '../GetDocumento';
-import { updateEtiquetaUseCase } from '../UpdateEtiqueta';
-import { getXPathText } from "../../helps/GetTextoPorXPATH";
-
-import { getCapaDoPassivaUseCase } from '../GetCapaDoPassiva';
-import { verificarCapaTrue } from './helps/verificarCapaTrue';
-import { buscarTableCpf } from './helps/procurarTableCpf';
-import { superDossie } from './DossieSuperSapiens'; */
-
-/* import { getInformationDossieForPicaPau } from './GetInformationFromDossieForPicaPau';
-import { getDocumentSislabraFromSapiens } from './GetDocumentSislabraFromSapiens';
-import { getInformationCapa } from './GetInformationCapa';
-import { compararNup } from "./helps/ComparaNUP";
-import MessageService from '../../MessageService';
- */
-
+import { tinfoClasseExist } from '../visaoRequest/TinfoClasseExists';
 import { getArvoreDocumento } from '../visaoRequest/getArvoreDocumento';
 import { getTarefas } from '../visaoRequest/getTarefas';
 import { getUsuarioRequest } from '../visaoRequest/getUsuarioRequest';
 import { loginVisao } from '../visaoRequest/loginRequest';
 import { updateEtiqueta } from '../visaoRequest/updateEtiqueta';
+
 
 
 
@@ -72,7 +50,8 @@ export class GetInformationFromSapienForSamirUseCase {
 //SOLICITA ARVORE DE DOCUMENTOS
                     try {
                         arrayDeDocumentos = (await getArvoreDocumento(objectGetArvoreDocumento)).reverse();
-                        
+                        console.log("arvore de documentos")
+                        console.log(arrayDeDocumentos);
                       
                     } catch (error) {
                         console.log("Erro ao aplicar getArvoreDocumentoUseCase!!!!");
@@ -86,12 +65,14 @@ export class GetInformationFromSapienForSamirUseCase {
 
                     
 //CAPA DO PROCESSO
-                    const tcapaParaVerificar = await getCapaDoPassivaUseCase.execute(tarefas[i].pasta.NUP, cookie);
-                    const tcapaFormatada = new JSDOM(tcapaParaVerificar)
-                    
-                    const tinfoClasseExist = await verificarCapaTrue(tcapaFormatada)
+                    const tinfoClasseExists = await tinfoClasseExist(tarefas[i].pasta.NUP, cookie)
+                    console.log("aqui")
+                     console.log(tinfoClasseExists)  
+
+                   
+
 //SE POSSUIR INFORMAÇÃO DE CLASSE
-                    if(tinfoClasseExist){
+                    if(tinfoClasseExists){
 //DOSPREV
 
                             objectDosPrev = arrayDeDocumentos.find(Documento => Documento.documentoJuntado.tipoDocumento.sigla == "DOSPREV");
@@ -104,7 +85,7 @@ export class GetInformationFromSapienForSamirUseCase {
                                 });
                                 
                                 if(objectDosPrev == undefined && objectDosPrev2 == undefined){
-                                    (await updateEtiquetaUseCase.execute({ cookie, etiqueta: "DOSPREV NÃO ENCONTRADO", tarefaId }));
+                                    (await updateEtiqueta({ cookie, etiqueta: "DOSPREV COM FALHA NA GERAÇAO", tarefaId }));
                                     continue
                                 }else if(objectDosPrev2 != undefined && objectDosPrev == undefined){
                                     objectDosPrev = objectDosPrev2;

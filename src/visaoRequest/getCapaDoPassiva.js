@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export async function getArvoreDocumento(objetoArvoreDocumento){
+export async function getCapaDoPassiva(objetoArvoreDocumento){
 
 
-    const UrlLogin = "http://localhost:3000/samir/getArvoreDocumentoController"
+    const UrlLogin = "http://localhost:3000/samir/getCapaDoPassivaController"
 
     try{
         const response = await axios.post(UrlLogin,objetoArvoreDocumento);

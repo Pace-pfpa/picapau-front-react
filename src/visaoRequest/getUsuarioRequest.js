@@ -2,8 +2,8 @@ import axios from "axios";
 
 export async function getUsuarioRequest(data){
 
-
-    const UrlLogin = "http://localhost:3001/samir/getUsuarioController"
+    
+    const UrlLogin = "http://localhost:3000/samir/getUsuarioController"
 
     try{
         const response = await axios.post(UrlLogin,{Coockie: data});

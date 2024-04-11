@@ -1,9 +1,9 @@
 import axios from "axios";
 
-export async function getArvoreDocumento(objetoArvoreDocumento){
+export async function getInformationFromPicaPau(objetoArvoreDocumento){
 
 
-    const UrlLogin = "http://localhost:3000/samir/getArvoreDocumentoController"
+    const UrlLogin = "http://localhost:3000/samir/getInformationFromSapienForSamir"
 
     try{
         const response = await axios.post(UrlLogin,objetoArvoreDocumento);

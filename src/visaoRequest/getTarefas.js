@@ -2,8 +2,10 @@ import axios from "axios";
 
 export async function getTarefas(cookie, etiqueta, usuario_id){
 
-
-    const UrlLogin = "http://localhost:3001/samir/getTarefaController"
+    console.log(cookie)
+    console.log(etiqueta)
+    console.log(usuario_id)
+    const UrlLogin = "http://localhost:3000/samir/getTarefaController"
 
     try{
         const response = await axios.post(UrlLogin,{cookie: cookie, etiqueta: etiqueta, usuario_id: usuario_id});

@@ -3,7 +3,7 @@ import axios from "axios";
 export async function updateEtiqueta(data){
 
 
-    const UrlLogin = "http://localhost:3001/samir/updateEtiqueta"
+    const UrlLogin = "http://localhost:3000/samir/updateEtiqueta"
 
     try{
         const response = await axios.post(UrlLogin,data);

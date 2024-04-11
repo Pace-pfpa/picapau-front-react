@@ -3,7 +3,7 @@ import axios from "axios";
 export async function loginVisao(data){
 
 
-    const UrlLogin = "http://localhost:3001/samir/login"
+    const UrlLogin = "http://localhost:3000/samir/login"
 
     try{
         const response = await axios.post(UrlLogin,data);
