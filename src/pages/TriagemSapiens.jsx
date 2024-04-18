@@ -22,8 +22,6 @@ import { saveProcess } from '../API/SaveProcess';
 
 
 function TriagemSapiens() {
-/*   const [cpf, setCpf] = useState("");
-  const [password, setPassword] = useState(""); */
   const navigate = useNavigate();
   const [Etiqueta, setEtiqueta] = useState("");
   const [isChecked, setIsChecked] = useState(false);
@@ -31,6 +29,8 @@ function TriagemSapiens() {
   const [IsContador, setIsContador] = useState(false)
   const stopProcessoRef = useRef(false);
   const [inializandoTriagem, setInializandoTriagem] = useState(false)
+  const [loas, setLoas] = useState(false)
+  const [statusSelecionado, setStatusSelecionado] = useState('0');
   
 
   useEffect(() => {
@@ -39,22 +39,14 @@ function TriagemSapiens() {
 }, []);;
 
   const verificarLogin = async () => {
-    // Coloque aqui a lógica da sua verificação
-    /* const data = {
-        "cpf": `${localStorage.getItem("sapiensCPF")}`,
-        "senha": `${localStorage.getItem("sapiensSenha")}`
-      }
-      console.log(data)
-    const response = await axios.post("http://localhost:3001/samir/login",data)
-    console.log(data)
-    console.log(response) */
+
     if(localStorage.getItem("sapiensCPF") == null || localStorage.getItem("sapiensSenha") == null || localStorage.getItem("token") == null){
       navigate("/");
     }
   }
 
   async function handleSubmit(event) {
-  event.preventDefault(); // Impede o envio padrão do formulário
+  event.preventDefault(); 
   
   
   setInializandoTriagem(true)
@@ -63,21 +55,22 @@ function TriagemSapiens() {
         "cpf": `${localStorage.getItem("sapiensCPF")}`,
         "senha": `${localStorage.getItem("sapiensSenha")}`
       },
-      /* "etiqueta": `${Etiqueta}`,
-      "readDosprevAge": isChecked */
+      
     }
-    //const response = await axios.post("http://localhost:3001/samir/getInformationFromSapienForSamir",data)
+    
 
 
 
     try{
-      
+      console.log(Number(statusSelecionado) == 1 || Number(statusSelecionado) == 2 ? true : false)
+      console.log(isChecked)
       const cookie = await loginVisao(data.login);
       const usuario =  (await getUsuarioRequest(cookie));
-      
+
+
  
        const usuario_id = `${usuario[0].id}`; 
-       let tarefas = await getTarefas(cookie, "FRODO", usuario_id);
+       let tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
        setInializandoTriagem(false)
        setIsLoading(true);
        let VerificarSeAindExisteProcesso = true;
@@ -91,7 +84,7 @@ function TriagemSapiens() {
              break;
            }
            setIsContador(contadorProcessos+1)
-           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: "FRODO", tarefa: tarefas[i], readDosprevAge: isChecked})
+           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado) == 1 || Number(statusSelecionado) == 2 ? true : false, loas: loas})
            const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
            const saveProc = await saveProcess(objectToDataBase);
            contadorProcessos++
@@ -106,7 +99,7 @@ function TriagemSapiens() {
         }
 
 
-         tarefas = await getTarefas(cookie, "FRODO", usuario_id);
+         tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
          if(tarefas.length == 0){
           VerificarSeAindExisteProcesso = false;
          }
@@ -151,7 +144,7 @@ function pararTriagem(){
     <LayoutLoginRegister>
       <form className="login-form" onSubmit={handleSubmit}>
 
-        <span className="login-form-title">Triagem Sapiens</span>
+        <span className="login-form-title">TRIAGEM SAPIENS</span>
 
         <span className="login-form-title">
           <img src={agupng} alt="Advocacia Geral da união" />
@@ -167,12 +160,30 @@ function pararTriagem(){
         </div>
         
         <div className='checkboxMaternidade'>
-      <input
+      {/* <input
         type="checkbox"
         checked={isChecked}
         onChange={() => setIsChecked(!isChecked)}
       />
       <label htmlFor="checkbox" className='labelChakput'>Calcular com Salário Maternidade?</label>
+      <br />
+      <input
+        type="checkbox"
+        checked={loas}
+        onChange={() => setLoas(!loas)}
+      />
+      <label htmlFor="checkbox" className='labelChakput'>Loas</label> */}
+      <p className='selecioneBeneficio'>Selecione o benefício</p>
+      <select 
+        id='status'
+        value={statusSelecionado}
+        onChange={(e) => setStatusSelecionado(e.target.value)}>
+          <option value="0">Aposentadoria Rural</option>
+          <option value="1">Salário Maternidade</option>
+          <option value="2">Loas</option>
+        </select>
+      
+      
     </div>
 
         <div className="container-login-form-btn">

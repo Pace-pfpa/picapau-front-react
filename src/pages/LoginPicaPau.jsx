@@ -25,7 +25,8 @@ export const LoginPicaPau = () => {
       "password": `${password}`
     }
     try{
-      const response = await axios.post("http://localhost:3052/register/login",data)
+      const response = await axios.post("http://localhost:3010/register/login",data)
+      
       if(response.status == 200){
         localStorage.setItem("token",response.data)
         navigate("/loginSapiens");

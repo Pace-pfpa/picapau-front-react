@@ -5,7 +5,7 @@ export async function createUser(user){
 
     try{
         console.log(user)
-        const Url = "http://localhost:3052/register/create/user"
+        const Url = "http://localhost:3010/register/create/user"
         const response = await axios.post(Url, user);
         console.log("dasasdsa")
         console.log(response.data)

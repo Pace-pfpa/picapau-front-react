@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI';
 }
 
 
@@ -407,4 +408,9 @@
   .meu-botao:active {
     background-color: #004085;
     transform: scale(0.95);
+  }
+
+  .selecioneBeneficio{
+    font-family: 'Segoe UI';
+    text-align: center;
   }

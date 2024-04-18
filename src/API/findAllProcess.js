@@ -2,7 +2,7 @@ import axios from "axios";
 
 export async function findAllProcess(date,status){
     console.log("chamouuuu")
-    const url = "http://localhost:3052/register/findAll"
+    const url = "http://localhost:3010/register/findAll"
     const response = await axios.post(url, {dataAtual: date, statusAtual: status} ,{
         headers: {
             'authorization': `Bearer ${localStorage.getItem("token")}`
