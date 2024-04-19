@@ -414,3 +414,64 @@
     font-family: 'Segoe UI';
     text-align: center;
   }
+
+
+
+.imagenDelete{
+  height: 30px;
+  cursor: pointer;
+  border: none;
+}
+
+.imagenDelete:hover{
+  height: 35px;
+  cursor: pointer;
+}
+
+.dleteClass{
+  cursor: default;
+  
+}
+.buttonDelete{
+  border: none;
+  background-color: transparent;
+}
+
+
+.clean-button {
+  background-color: #ec0b0b; /* Verde */
+  color: white; /* Texto branco */
+  border: none; /* Sem borda */
+  padding: 10px 20px; /* Espaçamento interno */
+  text-align: center; /* Alinhamento do texto */
+  text-decoration: none; /* Sem decoração de texto */
+  display: inline-block; /* Tipo de display */
+  font-size: 16px; /* Tamanho da fonte */
+  margin: 4px 2px; /* Margem externa */
+  cursor: pointer; /* Formato do cursor como ponteiro */
+  border-radius: 8px; /* Bordas arredondadas */
+  transition: background-color 0.3s; /* Transição suave da cor de fundo */
+  margin-left: 79.7%;
+}
+
+.clean-button:hover {
+  background-color: #883636; /* Mudar a cor de fundo no hover */
+}
+
+
+
+.status-container {
+  display: flex;
+  justify-content: center; /* Centraliza todos os itens juntos */
+  padding: 18px;
+  border-radius: 8px;
+}
+
+.status-item {
+  font-size: 16px;
+  color: #333;
+  padding: 5px 10px;
+  margin: 0 2px; /* Margem muito pequena para manter os itens juntos */
+  border-radius: 5px;
+  background-color: #e0e0e0;
+}

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { findAllProcess } from '../API/findAllProcess';
 import { useNavigate } from 'react-router-dom';
+import { TotaisProcessosDetalhado } from '../components/TotaisProcessosDetalhados';
+import { deleteProcessAll } from '../API/deleteProcessAll';
+import { deleteProcessById } from '../API/deleteProcessById';
 
 
 
@@ -12,13 +15,15 @@ export const HistoricoTriagem = ()=> {
   const [dados, setDados] = useState([]);
   const [dataSelecionada, setDataSelecionada] = useState(dataAtual);
   const [statusSelecionado, setStatusSelecionado] = useState('');
+  const [dadosParaContador, setDadosParaContador] = useState([])
   const navigate = useNavigate();
 
 useEffect(()=> {
   const processAPI = async () => {
       let data =  new Date().toISOString().split('T')[0];
-    const proces = await findAllProcess(data);
- setDados(proces)
+      const proces = await findAllProcess(data);
+      setDados(proces)
+      setDadosParaContador(proces)
   }
 
 verificarLogin();
@@ -44,9 +49,12 @@ async function filtrarDados(){
     const date = new Date(dataSelecionada).toISOString().split('T')[0];
     const proces = await findAllProcess(date);
     setDados(proces)
+    setDadosParaContador(proces)
   }
   else{
     const date = new Date(dataSelecionada).toISOString().split('T')[0];
+    const procesContador = await findAllProcess(date);
+    setDadosParaContador(procesContador)
     const statusString = String(statusSelecionado)
     const proces = await findAllProcess(date,statusString);
     setDados(proces)
@@ -57,6 +65,27 @@ async function filtrarDados(){
 const acessarSite = (item) => {
   window.open(`https://sapiens.agu.gov.br/visualizador?nup=${item.nup}&tarefaId=${item.tarefadId}`)
 }
+
+const deletarProcessoPorId = async (value) => {
+  try{
+    await deleteProcessById(value.id)
+    const elementosAtualizado = dados.filter((elementos) => elementos.id !== value.id);
+    const elementosAtualizadosContadoor = dadosParaContador.filter((elementos) => elementos.id !== value.id);
+    setDadosParaContador(elementosAtualizadosContadoor);
+    setDados(elementosAtualizado);
+    
+  }catch{
+
+  }
+}
+
+/* const deletarTodosProcessos = async ()=> {
+  try{
+    await deleteProcessAll();
+  }catch(e){
+
+  }
+} */
 
   return (
     <div className='ola'>
@@ -81,6 +110,8 @@ const acessarSite = (item) => {
         <br />
         <button onClick={async () =>  filtrarDados()}>Filtrar</button>
       </div>
+          <TotaisProcessosDetalhado processos={dadosParaContador} />
+      {/* <div><button onClick={() => deletarTodosProcessos()} className='clean-button'>Deletar Tudo</button></div> */}
         <table>
           <thead>
             <tr>
@@ -88,15 +119,17 @@ const acessarSite = (item) => {
               <th>Dia</th>
               <th>Hora</th>
               <th>Status</th>
+              <th>Delete</th>
             </tr>
           </thead>
             <tbody>
               {dados.map((item,index) => (
-                <tr  key={index} onClick={() => acessarSite(item)} className="linha-selecionada">
-                  <td>{item.nup}</td>
-                  <td>{item.dia}</td>
-                  <td>{item.hora}</td>
-                  <td><img className='pngStatus' src={item.statusProcess} alt="" /></td>
+                <tr  key={index}  className="linha-selecionada">
+                  <td onClick={() => acessarSite(item)}>{item.nup}</td>
+                  <td onClick={() => acessarSite(item)}>{item.dia}</td>
+                  <td onClick={() => acessarSite(item)}>{item.hora}</td>
+                  <td onClick={() => acessarSite(item)}><img className='pngStatus' src={item.statusProcess} alt="" /></td>
+                  <td className='dleteClass'><button className='buttonDelete' onClick={()=> deletarProcessoPorId(item)}><img className='imagenDelete' src="src/assets/deleteIcon.png" alt="" /></button></td>
                 </tr>
               ))}
             </tbody>
