@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export async function getInformationFromPicaPau(objetoArvoreDocumento){
-
+    console.log(objetoArvoreDocumento)
 
     const UrlLogin = "http://localhost:3000/samir/getInformationFromSapienForSamir"
 

@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import { TotaisProcessosDetalhado } from '../components/TotaisProcessosDetalhados';
 import { deleteProcessAll } from '../API/deleteProcessAll';
 import { deleteProcessById } from '../API/deleteProcessById';
+import { TelaInformarExisteProcessoNoBanco } from '../components/TelaInformarExisteProcessoNoBanco';
+import { LoadBancoDeDados } from '../components/LoadBancoDeDados';
 
 
 
@@ -15,14 +17,17 @@ export const HistoricoTriagem = ()=> {
   const [dados, setDados] = useState([]);
   const [dataSelecionada, setDataSelecionada] = useState(dataAtual);
   const [statusSelecionado, setStatusSelecionado] = useState('');
-  const [dadosParaContador, setDadosParaContador] = useState([])
+  const [dadosParaContador, setDadosParaContador] = useState([]);
+  const [carregandoBanco, setCarregandoBanco] = useState(false)
   const navigate = useNavigate();
 
 useEffect(()=> {
+  setCarregandoBanco(true);
   const processAPI = async () => {
       let data =  new Date().toISOString().split('T')[0];
       const proces = await findAllProcess(data);
       setDados(proces)
+      setCarregandoBanco(false)
       setDadosParaContador(proces)
   }
 
@@ -47,8 +52,10 @@ const verificarLogin = async () => {
 async function filtrarDados(){
   if(dataSelecionada && statusSelecionado.length==0){
     const date = new Date(dataSelecionada).toISOString().split('T')[0];
+    setCarregandoBanco(true);
     const proces = await findAllProcess(date);
     setDados(proces)
+    setCarregandoBanco(false);
     setDadosParaContador(proces)
   }
   else{
@@ -56,8 +63,10 @@ async function filtrarDados(){
     const procesContador = await findAllProcess(date);
     setDadosParaContador(procesContador)
     const statusString = String(statusSelecionado)
+    setCarregandoBanco(true);
     const proces = await findAllProcess(date,statusString);
     setDados(proces)
+    setCarregandoBanco(false);
   }
 }
 
@@ -79,16 +88,11 @@ const deletarProcessoPorId = async (value) => {
   }
 }
 
-/* const deletarTodosProcessos = async ()=> {
-  try{
-    await deleteProcessAll();
-  }catch(e){
 
-  }
-} */
 
   return (
     <div className='ola'>
+      {/* <div><button onClick={() => deletarTodosProcessos()} className='clean-button'>Deletar Tudo</button></div> */}
       <div className='inputDate'>
         <label htmlFor="">Filtrar por Data</label>
         <input type="date"
@@ -110,30 +114,43 @@ const deletarProcessoPorId = async (value) => {
         <br />
         <button onClick={async () =>  filtrarDados()}>Filtrar</button>
       </div>
+         
           <TotaisProcessosDetalhado processos={dadosParaContador} />
-      {/* <div><button onClick={() => deletarTodosProcessos()} className='clean-button'>Deletar Tudo</button></div> */}
-        <table>
-          <thead>
-            <tr>
-              <th>Nup</th>
-              <th>Dia</th>
-              <th>Hora</th>
-              <th>Status</th>
-              <th>Delete</th>
-            </tr>
-          </thead>
-            <tbody>
-              {dados.map((item,index) => (
-                <tr  key={index}  className="linha-selecionada">
-                  <td onClick={() => acessarSite(item)}>{item.nup}</td>
-                  <td onClick={() => acessarSite(item)}>{item.dia}</td>
-                  <td onClick={() => acessarSite(item)}>{item.hora}</td>
-                  <td onClick={() => acessarSite(item)}><img className='pngStatus' src={item.statusProcess} alt="" /></td>
-                  <td className='dleteClass'><button className='buttonDelete' onClick={()=> deletarProcessoPorId(item)}><img className='imagenDelete' src="src/assets/deleteIcon.png" alt="" /></button></td>
-                </tr>
-              ))}
-            </tbody>
-        </table>
+          {carregandoBanco ? (
+            <LoadBancoDeDados/>
+          ) : (
+            dados.length <= 0 ? (
+              <TelaInformarExisteProcessoNoBanco />
+            ) : (
+              <div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Nup</th>
+                      <th>Dia</th>
+                      <th>Hora</th>
+                      <th>Status</th>
+                      <th>Delete</th>
+                    </tr>
+                  </thead>
+                    <tbody>
+                      {dados.map((item,index) => (
+                        <tr  key={index}  className="linha-selecionada">
+                          <td onClick={() => acessarSite(item)}>{item.nup}</td>
+                          <td onClick={() => acessarSite(item)}>{item.dia}</td>
+                          <td onClick={() => acessarSite(item)}>{item.hora}</td>
+                          <td onClick={() => acessarSite(item)}><img className='pngStatus' src={item.statusProcess} alt="" /></td>
+                          <td className='dleteClass'><button className='buttonDelete' onClick={()=> deletarProcessoPorId(item)}><img className='imagenDelete' src="src/assets/deleteIcon.png" alt="" /></button></td>
+                        </tr>
+                      ))}
+                    </tbody>
+                </table>
+  
+              </div>
+  
+            )
+          )}
+        
     </div>
   );
 };

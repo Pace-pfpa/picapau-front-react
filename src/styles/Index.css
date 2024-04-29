@@ -475,3 +475,19 @@
   border-radius: 5px;
   background-color: #e0e0e0;
 }
+
+.no-processes {
+  color: #555; /* Cor do texto */
+  background-color: #f8f8f8; /* Cor de fundo */
+  border: 1px solid #ddd; /* Borda sutil */
+  text-align: center; /* Centraliza o texto */
+  padding: 20px; /* Espaço interno */
+  margin: 20px; /* Margem externa */
+  border-radius: 10px; /* Bordas arredondadas */
+  font-size: 18px; /* Tamanho da fonte */
+  font-family: 'Arial', sans-serif; /* Tipo de fonte */
+  box-shadow: 2px 2px 5px rgba(0,0,0,0.1); /* Sombra suave */
+  max-width: 600px; /* Largura máxima */
+  margin-left: auto; /* Centraliza horizontalmente */
+  margin-right: auto;
+}

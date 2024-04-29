@@ -29,7 +29,7 @@ function TriagemSapiens() {
   const [IsContador, setIsContador] = useState(false)
   const stopProcessoRef = useRef(false);
   const [inializandoTriagem, setInializandoTriagem] = useState(false)
-  const [loas, setLoas] = useState(false)
+  const loas = useRef(false);
   const [statusSelecionado, setStatusSelecionado] = useState('0');
   
 
@@ -66,9 +66,14 @@ function TriagemSapiens() {
       console.log(isChecked)
       const cookie = await loginVisao(data.login);
       const usuario =  (await getUsuarioRequest(cookie));
-
-
- 
+      console.log(Number(statusSelecionado) == 2)
+      if(Number(statusSelecionado) == 2){
+        console.log(statusSelecionado)
+        console.log("dasdasdadasdsadsa")
+        console.log(loas)
+        loas.current = true;
+        console.log(loas)
+      }
        const usuario_id = `${usuario[0].id}`; 
        let tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
        setInializandoTriagem(false)
@@ -83,8 +88,9 @@ function TriagemSapiens() {
              setIsContador(false)
              break;
            }
+           console.log(loas)
            setIsContador(contadorProcessos+1)
-           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado) == 1 || Number(statusSelecionado) == 2 ? true : false, loas: loas})
+           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado) == 1 || Number(statusSelecionado) == 2 ? true : false, loas: loas.current})
            const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
            const saveProc = await saveProcess(objectToDataBase);
            contadorProcessos++
@@ -105,6 +111,7 @@ function TriagemSapiens() {
          }
 
        }
+       loas.current = false;
        setIsLoading(false)
 
 
@@ -180,7 +187,7 @@ function pararTriagem(){
         onChange={(e) => setStatusSelecionado(e.target.value)}>
           <option value="0">Aposentadoria Rural</option>
           <option value="1">Salário Maternidade</option>
-          <option value="2">Loas</option>
+          {/* <option value="2">Loas</option> */}
         </select>
       
       
