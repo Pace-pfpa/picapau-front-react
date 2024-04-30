@@ -7,7 +7,7 @@ import '../styles/Index.css'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
-
+import { controleUser } from '../global';
 
 
 export const LoginPicaPau = () => {
@@ -25,7 +25,7 @@ export const LoginPicaPau = () => {
       "password": `${password}`
     }
     try{
-      const response = await axios.post("http://localhost:3010/register/login",data)
+      const response = await axios.post(`${controleUser}register/login`,data)
       
       if(response.status == 200){
         localStorage.setItem("token",response.data)

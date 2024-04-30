@@ -1,9 +1,10 @@
 import axios from "axios";
+import { controleUser } from "../global";
 
 export async function findAllProcess(date,status){
     console.log("chamouuuu")
     const url = "http://localhost:3010/register/findAll"
-    const response = await axios.post(url, {dataAtual: date, statusAtual: status} ,{
+    const response = await axios.post(`${controleUser}register/findAll`, {dataAtual: date, statusAtual: status} ,{
         headers: {
             'authorization': `Bearer ${localStorage.getItem("token")}`
         }

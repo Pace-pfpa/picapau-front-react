@@ -1,4 +1,5 @@
 import axios from "axios";
+import { controleUser } from "../global";
 
 
 export async function createUser(user){
@@ -6,7 +7,7 @@ export async function createUser(user){
     try{
         console.log(user)
         const Url = "http://localhost:3010/register/create/user"
-        const response = await axios.post(Url, user);
+        const response = await axios.post(`${controleUser}register/create/user`, user);
         console.log("dasasdsa")
         console.log(response.data)
         if(response.status == 201){

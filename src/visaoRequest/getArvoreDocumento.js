@@ -1,4 +1,5 @@
 import axios from "axios";
+import { picapauApiSapiens } from "../global";
 
 export async function getArvoreDocumento(objetoArvoreDocumento){
 
@@ -6,7 +7,7 @@ export async function getArvoreDocumento(objetoArvoreDocumento){
     const UrlLogin = "http://localhost:3000/samir/getArvoreDocumentoController"
 
     try{
-        const response = await axios.post(UrlLogin,objetoArvoreDocumento);
+        const response = await axios.post(`${picapauApiSapiens}getArvoreDocumentoController`,objetoArvoreDocumento);
         
         if(response.status == 200){
             return Promise.resolve(response.data);

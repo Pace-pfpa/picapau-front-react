@@ -1,4 +1,5 @@
 import axios from "axios";
+import { picapauApiSapiens } from "../global";
 
 export async function tinfoClasseExist(data){
 
@@ -6,7 +7,7 @@ export async function tinfoClasseExist(data){
     const UrlLogin = "http://localhost:3000/samir/getTinfoClasseExist"
 
     try{
-        const response = await axios.post(UrlLogin,data);
+        const response = await axios.post(`${picapauApiSapiens}getTinfoClasseExist`,data);
         
         if(response.status == 200){
             return Promise.resolve(response.data);

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { picapauApiSapiens } from "../global";
 
 export async function getTarefas(cookie, etiqueta, usuario_id){
 
@@ -8,7 +9,7 @@ export async function getTarefas(cookie, etiqueta, usuario_id){
     const UrlLogin = "http://localhost:3000/samir/getTarefaController"
 
     try{
-        const response = await axios.post(UrlLogin,{cookie: cookie, etiqueta: etiqueta, usuario_id: usuario_id});
+        const response = await axios.post(`${picapauApiSapiens}getTarefaController`,{cookie: cookie, etiqueta: etiqueta, usuario_id: usuario_id});
         
         if(response.status == 200){
             return Promise.resolve(response.data);

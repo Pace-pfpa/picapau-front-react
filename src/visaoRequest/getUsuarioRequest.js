@@ -1,4 +1,5 @@
 import axios from "axios";
+import { picapauApiSapiens } from "../global";
 
 export async function getUsuarioRequest(data){
 
@@ -6,7 +7,7 @@ export async function getUsuarioRequest(data){
     const UrlLogin = "http://localhost:3000/samir/getUsuarioController"
 
     try{
-        const response = await axios.post(UrlLogin,{Coockie: data});
+        const response = await axios.post(`${picapauApiSapiens}getUsuarioController`,{Coockie: data});
         
         if(response.status == 200){
             return Promise.resolve(response.data);

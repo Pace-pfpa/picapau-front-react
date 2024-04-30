@@ -1,4 +1,5 @@
 import axios from "axios";
+import { picapauApiSapiens } from "../global";
 
 export async function getInformationFromPicaPau(objetoArvoreDocumento){
     console.log(objetoArvoreDocumento)
@@ -6,7 +7,7 @@ export async function getInformationFromPicaPau(objetoArvoreDocumento){
     const UrlLogin = "http://localhost:3000/samir/getInformationFromSapienForSamir"
 
     try{
-        const response = await axios.post(UrlLogin,objetoArvoreDocumento);
+        const response = await axios.post(`${picapauApiSapiens}getInformationFromSapienForSamir`,objetoArvoreDocumento);
         
         if(response.status == 200){
             return Promise.resolve(response.data);

@@ -6,6 +6,7 @@ import '../styles/Index.css'
 /* import { Link } from 'react-router-dom' */
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex'
 import axios from 'axios';
+import { picapauApiSapiens } from '../global';
 
 
 
@@ -24,7 +25,7 @@ export const LoginSapiens = () => {
       "senha": `${password}`
     }
     try{
-      const response = await axios.post("http://localhost:3000/samir/login",data)
+      const response = await axios.post(`${picapauApiSapiens}login`,data)
       if(response.status == 200){
         console.log(response.data)
         localStorage.setItem("sapiensCPF", cpf);
