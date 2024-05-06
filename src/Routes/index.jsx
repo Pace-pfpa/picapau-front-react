@@ -2,10 +2,10 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import { LoginSapiens } from '../pages/LoginSapiens'
 import Cadastro from '../pages/Cadastro'
 import TriagemSapiens from '../pages/TriagemSapiens'
-import { ResponsiveAppBar } from '../pages/ResponsiveAppBar'
 import { TriagemLayout } from './TriagemLayout'
 import { HistoricoTriagem } from '../pages/HistoricoTriagem'
 import { LoginPicaPau } from '../pages/LoginPicaPau'
+import { RecuperarSenha } from '../pages/RecuperarSenha'
 
 
 
@@ -14,6 +14,7 @@ export const AppRouter = () => {
     return (
         <Router>
             <Routes>
+                <Route path='/recuperarSenha' exact element={<RecuperarSenha/>} />
                 <Route path='/loginSapiens' exact element={<LoginSapiens/>} />
                 <Route path='/cadastro' exact element={<Cadastro/>}/>
                 <Route path='/triagem' exact element={

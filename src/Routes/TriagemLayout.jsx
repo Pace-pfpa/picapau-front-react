@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { ResponsiveAppBar } from '../pages/ResponsiveAppBar'
 
 

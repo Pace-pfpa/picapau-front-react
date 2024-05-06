@@ -1,62 +1,33 @@
 /* eslint-disable no-unused-vars */
-/* eslint-disable react-hooks/rules-of-hooks */
-import { useState  } from 'react'
-import { useNavigate } from 'react-router-dom';
-import agupng from '../assets/AGU.png'
-import '../styles/Index.css'
-/* import { Link } from 'react-router-dom' */
-import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex'
-import axios from 'axios';
+
 import { Link } from 'react-router-dom'
-import { controleUser } from '../global';
+import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex'
+import agupng from '../assets/AGU.png'
+import { useState } from 'react'
 
 
-export const LoginPicaPau = () => {
-  const [cpf, setCpf] = useState("");
-  const [password, setPassword] = useState("");
-  const [userIncorret, setUserIncorret] = useState(false);
-  const navigate = useNavigate();
+export const RecuperarSenha = () => {
 
-    
-  async function handleSubmit(event) {
-    event.preventDefault();
-  
-    const data = {
-      "email": `${cpf}`,
-      "password": `${password}`
+    const [cpf, setCpf] = useState("");
+    const [password ,setPassword] = useState("");
+    const [confirmCpf, setConfirmCpf] = useState("");
+
+    async function handleSubmit(event) {
+        event.preventDefault();
+
+
     }
-    try{
-      const response = await axios.post(`${controleUser}register/login`,data)
-      
-      if(response.status == 200){
-        localStorage.setItem("token",response.data)
-        navigate("/loginSapiens");
-      } else{
-        console.log('incorreto user')
-        setUserIncorret(true)
-      } 
-    }catch(e){
-      setUserIncorret(true)
-    }
-  
-      
+
+
+    const handleClick = () => {
+        
+        
+      };
     
-  }
 
-  const handleClick = () => {
-    if(userIncorret){
-      setUserIncorret(!userIncorret);
-    }
-    
-  };
-
-  function toCadastro(){
-    navigate("/cadastro");
-  }
-
-  return (
-
-    <LayoutLoginRegister>
+    return (
+        <div>
+            <LayoutLoginRegister>
       <form className="login-form" onSubmit={handleSubmit}>
 
         <span className="login-form-title">SUPER PICAPAU</span>
@@ -69,10 +40,11 @@ export const LoginPicaPau = () => {
           <input className={cpf != "" ? 'has-val input' : 'input'}
             type="text"
             value={cpf}
+            required
             onChange={e => setCpf(e.target.value)}
             onFocus={e => handleClick()}
           />
-          <span className="focus-input" data-placeholder="email"></span>
+          <span className="focus-input" data-placeholder="Cpf   "></span>
         </div>
 
         <div className="wrap-input">
@@ -84,7 +56,17 @@ export const LoginPicaPau = () => {
           />
           <span className="focus-input" data-placeholder="Password"></span>
         </div>
-        {userIncorret && <p className='userIncorrect'>Usuário Incorreto</p>}
+
+        <div className="wrap-input">
+          <input className={confirmCpf != "" ? 'has-val input' : 'input'}
+            type="password"
+            value={confirmCpf}
+            onChange={e => setConfirmCpf(e.target.value)}
+            onFocus={e => handleClick()}
+          />
+          <span className="focus-input" data-placeholder="Confirm Password"></span>
+        </div>
+        {/* {userIncorret && <p className='userIncorrect'>Usuário Incorreto</p>} */}
         <div className="container-login-form-btn">
           <button className="login-form-btn">Login</button>
         </div>
@@ -107,15 +89,14 @@ export const LoginPicaPau = () => {
           </Link>
         </div>
        <div className='esqueceuSenhaDiv'>
-       <span className="txt1">Esqueceu a Senha?</span>
-          <Link to="/recuperarSenha" className="txt2">
-            Recuperar Senha
+       <span className="txt1">Já tem Conta?</span>
+          <Link to="/" className="txt2">
+            Login
           </Link>
        </div>
 
         
     </LayoutLoginRegister>
-  )
+        </div>
+    )
 }
-
-

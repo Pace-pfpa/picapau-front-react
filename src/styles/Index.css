@@ -491,3 +491,9 @@
   margin-left: auto; /* Centraliza horizontalmente */
   margin-right: auto;
 }
+
+.esqueceuSenhaDiv{
+  align-items: center;
+    justify-content: center;
+    display: flex;
+}

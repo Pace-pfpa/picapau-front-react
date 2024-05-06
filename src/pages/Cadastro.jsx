@@ -13,6 +13,7 @@ function Cadastro() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const [usuarioExiste, setUsuarioExiste] = useState(false);
+  const [cpf, setCpf] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,7 +21,8 @@ function Cadastro() {
       const data = {
         "nome": name,
         "email": email,
-        "password": password
+        "password": password,
+        "cpf": cpf
       }
 
       await createUser(data);
@@ -49,6 +51,7 @@ function Cadastro() {
           <input className={name != "" ? 'has-val input' : 'input'}
             type="text"
             value={name}
+            required
             onChange={e => setName(e.target.value)}
           />
           <span className="focus-input" data-placeholder="Nome"></span>
@@ -58,6 +61,7 @@ function Cadastro() {
           <input className={email != "" ? 'has-val input' : 'input'}
             type="email"
             value={email}
+            required
             onChange={e => setEmail(e.target.value)}
           />
           <span className="focus-input" data-placeholder="Email"></span>
@@ -67,9 +71,20 @@ function Cadastro() {
           <input className={password != "" ? 'has-val input' : 'input'}
             type="password"
             value={password}
+            required
             onChange={e => setPassword(e.target.value)}
           />
           <span className="focus-input" data-placeholder="Password"></span>
+        </div>
+
+        <div className="wrap-input">
+          <input className={cpf != "" ? 'has-val input' : 'input'}
+            type="text"
+            value={cpf}
+            required
+            onChange={e => setCpf(e.target.value)}
+          />
+          <span className="focus-input" data-placeholder="Cpf"></span>
         </div>
 
         {usuarioExiste && <p className='userIncorrect'>Usuário Incorreto</p>}
