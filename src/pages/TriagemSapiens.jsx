@@ -17,7 +17,7 @@ import { FinalizandoTriagem } from '../components/finalizandoTriagem';
 import { IniciandoTriagem } from '../components/IniciandoTriagem';
 import { buildObjectProcess } from '../Help/BuildObjectProcess';
 import { saveProcess } from '../API/SaveProcess';
-
+import { jwtDecode } from 'jwt-decode';
 
 
 
@@ -31,9 +31,13 @@ function TriagemSapiens() {
   const [inializandoTriagem, setInializandoTriagem] = useState(false)
   const loas = useRef(false);
   const [statusSelecionado, setStatusSelecionado] = useState('0');
+  const [iniciarLoas, setIniciarLoas] = useState(false);
   
 
   useEffect(() => {
+    if(jwtDecode(localStorage.getItem("token")).role == 0){
+      setIniciarLoas(true);
+    }
   verificarLogin();
   return () => verificarLogin()
 }, []);;
@@ -187,7 +191,9 @@ function pararTriagem(){
         onChange={(e) => setStatusSelecionado(e.target.value)}>
           <option value="0">Aposentadoria Rural</option>
           <option value="1">Salário Maternidade</option>
-          {/* <option value="2">Loas</option> */}
+          {iniciarLoas && (
+             <option value="2">Loas</option>
+          )}
         </select>
       
       

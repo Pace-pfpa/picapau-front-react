@@ -51,6 +51,11 @@ export const LoginSapiens = () => {
     
   };
 
+  const sair = () => {
+    localStorage.clear()
+    navigate("/");
+  }
+
   return (
 
     <LayoutLoginRegister>
@@ -86,6 +91,9 @@ export const LoginSapiens = () => {
           <button className="login-form-btn">Login</button>
         </div>
 
+        <div className="container-login-form-btn">
+          <button className="botaoSair" onClick={sair}>SAIR</button>
+        </div> 
 
         {/* <div className="text-center">
           <span className="txt1">Não possui conta?</span>
