@@ -75,7 +75,7 @@ export const PageInteressados = () => {
       </div>        
       
     </form>
-    <div>
+    <div className='classLoadingAndError'>
       {loading && <CircularProgresss />}
       {error && <AlertsError />}
     </div>

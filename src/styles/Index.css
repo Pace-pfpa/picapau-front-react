@@ -498,11 +498,9 @@
     display: flex;
 }
 
-.page-interessados{
+.classLoadingAndError{
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: red;
-
 }
 
