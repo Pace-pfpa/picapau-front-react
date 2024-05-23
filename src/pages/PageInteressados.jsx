@@ -24,6 +24,7 @@ export const PageInteressados = () => {
 
 
     try {
+         setError(false)
         setLoading(true)
         const response = await interessados(Etiqueta)
         setLoading(false)
