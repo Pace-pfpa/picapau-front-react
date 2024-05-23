@@ -497,3 +497,12 @@
     justify-content: center;
     display: flex;
 }
+
+.page-interessados{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: red;
+
+}
+

@@ -16,7 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { UserStatus } from '../components/UserStatus';
 
 
-const pages = ['Triagem', 'Histórico de Processos'];
+const pages = ['Triagem', 'Histórico de Processos', 'Interessados'];
 const settings = ['Logout'];
 
 export const  ResponsiveAppBar = ()=> {
@@ -28,26 +28,24 @@ export const  ResponsiveAppBar = ()=> {
 
 
   const handleOpenNavMenu = (event) => {
-    console.log("1")
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
-    console.log("2")
     setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = (value) => {
-    console.log("3")
     if(value.trim() == "Triagem"){
       navigate("/triagem");
-    }else{
+    }else if(value.trim() == "Histórico de Processos"){
       navigate("/historico");
+    }else if(value.trim() == "Interessados"){
+      navigate("/interessados");
     }
     setAnchorElNav(null);
   };
 
   const handleCloseUserMenu = (value) => {
-    console.log("4")
     if(value.trim()=="Logout"){
       localStorage.clear()
       navigate("/");

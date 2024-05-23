@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex'
 import agupng from '../assets/AGU.png'
 import { useState } from 'react'
-import { updatePassword } from '../API/UpdatePassword'
+import { updatePassword } from '../API/UserAPI/updatePassword'
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useNavigate } from 'react-router-dom';

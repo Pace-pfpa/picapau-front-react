@@ -3,7 +3,7 @@ import '../styles/Index.css'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
 import { Link } from 'react-router-dom'
 import agupng from '../assets/AGU.png'
-import { createUser } from '../API/CreateUser';
+import { createUser } from '../API/UserAPI/createUser';
 import { useNavigate } from 'react-router-dom';
 
 

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { findAllProcess } from '../API/findAllProcess';
+import { findAllProcess } from '../API/UserAPI/findAllProcess';
 import { useNavigate } from 'react-router-dom';
 import { TotaisProcessosDetalhado } from '../components/TotaisProcessosDetalhados';
-import { deleteProcessAll } from '../API/deleteProcessAll';
-import { deleteProcessById } from '../API/deleteProcessById';
+import { deleteProcessById } from '../API/UserAPI/deleteProcessById';
 import { TelaInformarExisteProcessoNoBanco } from '../components/TelaInformarExisteProcessoNoBanco';
 import { LoadBancoDeDados } from '../components/LoadBancoDeDados';
 
@@ -92,7 +91,6 @@ const deletarProcessoPorId = async (value) => {
 
   return (
     <div className='ola'>
-      {/* <div><button onClick={() => deletarTodosProcessos()} className='clean-button'>Deletar Tudo</button></div> */}
       <div className='inputDate'>
         <label htmlFor="">Filtrar por Data</label>
         <input type="date"

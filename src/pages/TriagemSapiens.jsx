@@ -4,10 +4,8 @@ import '../styles/Index.css'
 //import { Link } from 'react-router-dom'
 import agupng from '../assets/AGU.png'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
-import LinearIndeterminate from '../components/reload';
+import LinearIndeterminate from '../components/Progress/LinearProgresss';
 import { useNavigate } from 'react-router-dom';
-import {VerificaEtiqueta} from '../helps/verificaEtiqueta/';
-import { getInformationFromSapienForSamirUseCase } from '../triagemFolder';
 import { getTarefas } from '../visaoRequest/getTarefas';
 import { loginVisao } from '../visaoRequest/loginRequest';
 import { getUsuarioRequest } from '../visaoRequest/getUsuarioRequest';
@@ -16,7 +14,7 @@ import { TriagemSapiensComponent } from '../components/TriagemSapiensComponent';
 import { FinalizandoTriagem } from '../components/finalizandoTriagem';
 import { IniciandoTriagem } from '../components/IniciandoTriagem';
 import { buildObjectProcess } from '../Help/BuildObjectProcess';
-import { saveProcess } from '../API/SaveProcess';
+import { saveProcess } from '../API/UserAPI/saveProcess';
 import { jwtDecode } from 'jwt-decode';
 
 
@@ -80,6 +78,8 @@ function TriagemSapiens() {
       }
        const usuario_id = `${usuario[0].id}`; 
        let tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
+       console.log(tarefas.length)
+       console.log("atrefas")
        setInializandoTriagem(false)
        setIsLoading(true);
        let VerificarSeAindExisteProcesso = true;
@@ -92,13 +92,19 @@ function TriagemSapiens() {
              setIsContador(false)
              break;
            }
-           console.log(loas)
            setIsContador(contadorProcessos+1)
-           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado) == 1 || Number(statusSelecionado) == 2 ? true : false, loas: loas.current})
+           console.log(Etiqueta)
+           console.log(statusSelecionado)
+           console.log(loas)
+           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado), loas: loas.current})
+           console.log("process")
+           console.log(processo)
            const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
            const saveProc = await saveProcess(objectToDataBase);
            contadorProcessos++
- 
+           console.log("$$")
+           console.log(tarefas.length)
+           console.log(i)
          }
          if(stopProcessoRef.current){
           console.log("saiu")
@@ -171,19 +177,7 @@ function pararTriagem(){
         </div>
         
         <div className='checkboxMaternidade'>
-      {/* <input
-        type="checkbox"
-        checked={isChecked}
-        onChange={() => setIsChecked(!isChecked)}
-      />
-      <label htmlFor="checkbox" className='labelChakput'>Calcular com Salário Maternidade?</label>
-      <br />
-      <input
-        type="checkbox"
-        checked={loas}
-        onChange={() => setLoas(!loas)}
-      />
-      <label htmlFor="checkbox" className='labelChakput'>Loas</label> */}
+      
       <p className='selecioneBeneficio'>Selecione o benefício</p>
       <select 
         id='status'

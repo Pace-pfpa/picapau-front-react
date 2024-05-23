@@ -6,6 +6,7 @@ import { TriagemLayout } from './TriagemLayout'
 import { HistoricoTriagem } from '../pages/HistoricoTriagem'
 import { LoginPicaPau } from '../pages/LoginPicaPau'
 import { RecuperarSenha } from '../pages/RecuperarSenha'
+import { PageInteressados } from '../pages/PageInteressados'
 
 
 
@@ -27,6 +28,11 @@ export const AppRouter = () => {
                     <HistoricoTriagem/>
                 </TriagemLayout>
                 }/>
+                <Route path='/interessados' exact element={
+                    <TriagemLayout>
+                        <PageInteressados/>
+                    </TriagemLayout>
+                } />
                 <Route path='/' exact element={<LoginPicaPau/>} />
             </Routes>
         </Router>

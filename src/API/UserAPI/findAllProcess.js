@@ -1,5 +1,5 @@
 import axios from "axios";
-import { controleUser } from "../global";
+import { controleUser } from "../../global";
 
 export async function findAllProcess(date,status){
     console.log("chamouuuu")

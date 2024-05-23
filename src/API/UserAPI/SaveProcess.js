@@ -1,5 +1,5 @@
 import axios from "axios";
-import { controleUser } from "../global";
+import { controleUser } from "../../global";
 
 export async function saveProcess(data){
     const url = "http://localhost:3010/register/saveProcess"
