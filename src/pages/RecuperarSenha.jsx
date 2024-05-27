@@ -106,7 +106,7 @@ export const RecuperarSenha = () => {
             onChange={e => setPassword(e.target.value)}
             onFocus={e => handleClick()}
           />
-          <span className="focus-input" data-placeholder="Senha"></span>
+          <span className="focus-input" data-placeholder="Nova senha"></span>
         </div>
 
         <div className="wrap-input">
@@ -116,7 +116,7 @@ export const RecuperarSenha = () => {
             onChange={e => setConfirmCpf(e.target.value)}
             onFocus={e => handleClick()}
           />
-          <span className="focus-input" data-placeholder="Confirme sua senha"></span>
+          <span className="focus-input" data-placeholder="Confirme a nova senha"></span>
         </div>
         {/* {userIncorret && <p className='userIncorrect'>Usuário Incorreto</p>} */}
         <div className="container-login-form-btn">

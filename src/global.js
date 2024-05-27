@@ -1,4 +1,4 @@
-export const controleUser = "http://10.191.9.57:3010/"
+export const controleUser = "http://localhost:3010/"
 
 
-export const picapauApiSapiens = "http://localhost:3020/samir/"
+export const picapauApiSapiens = "http://localhost:3000/samir/"
