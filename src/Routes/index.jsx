@@ -7,33 +7,45 @@ import { HistoricoTriagem } from '../pages/HistoricoTriagem'
 import { LoginPicaPau } from '../pages/LoginPicaPau'
 import { RecuperarSenha } from '../pages/RecuperarSenha'
 import { PageInteressados } from '../pages/PageInteressados'
+import { ServidorManutencao } from '../pages/ServidorManutencao'
+import { useState } from 'react'
 
 
 
 
 export const AppRouter = () => {
+
+    const [isManutencao] = useState(false)
+
     return (
         <Router>
             <Routes>
-                <Route path='/recuperarSenha' exact element={<RecuperarSenha/>} />
-                <Route path='/loginSapiens' exact element={<LoginSapiens/>} />
-                <Route path='/cadastro' exact element={<Cadastro/>}/>
-                <Route path='/triagem' exact element={
+
+                { isManutencao ? <Route path='/' exact element={<ServidorManutencao/>} />
+                : 
+                <>
+                    <Route path='/recuperarSenha' exact element={<RecuperarSenha/>} />
+                    <Route path='/loginSapiens' exact element={<LoginSapiens/>} />
+                    <Route path='/cadastro' exact element={<Cadastro/>}/>
+                    <Route path='/triagem' exact element={
+                        <TriagemLayout>
+                            <TriagemSapiens/>
+                        </TriagemLayout>
+                    }/>
+                    <Route path='/historico' exact element={
                     <TriagemLayout>
-                        <TriagemSapiens/>
+                        <HistoricoTriagem/>
                     </TriagemLayout>
-                }/>
-                <Route path='/historico' exact element={
-                <TriagemLayout>
-                    <HistoricoTriagem/>
-                </TriagemLayout>
-                }/>
-                <Route path='/interessados' exact element={
-                    <TriagemLayout>
-                        <PageInteressados/>
-                    </TriagemLayout>
-                } />
-                <Route path='/' exact element={<LoginPicaPau/>} />
+                    }/>
+                    <Route path='/interessados' exact element={
+                        <TriagemLayout>
+                            <PageInteressados/>
+                        </TriagemLayout>
+                    } />
+                    <Route path='/' exact element={<LoginPicaPau/>} />
+                </> }
+
+                
             </Routes>
         </Router>
     )
