@@ -140,7 +140,7 @@ const deletarProcessoPorId = async (value) => {
                           <td onClick={() => acessarSite(item)}><img className='pngStatus' src={item.statusProcess} alt="" /></td>
                           <td className='dleteClass'><button className='buttonDelete' onClick={()=> deletarProcessoPorId(item)}><img className='imagenDelete' src="src/assets/deleteIcon.png" alt="" /></button></td>
                         </tr>
-                      ))}
+                      )).reverse()}
                     </tbody>
                 </table>
   
