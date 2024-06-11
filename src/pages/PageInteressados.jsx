@@ -47,7 +47,7 @@ export const PageInteressados = () => {
     <LayoutLoginRegister>
     <form className="login-form" onSubmit={handleSubmit}>
 
-      <span className="login-form-title">TRIAGEM SAPIENS</span>
+      <span className="login-form-title">ENVOLVIDOS</span>
 
       <span className="login-form-title">
         <img src={agupng} alt="Advocacia Geral da união" />
