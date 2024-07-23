@@ -38,7 +38,7 @@ function TriagemSapiens() {
     }
   verificarLogin();
   return () => verificarLogin()
-}, []);
+}, []);;
 
   const verificarLogin = async () => {
 
@@ -96,18 +96,15 @@ function TriagemSapiens() {
            console.log(Etiqueta)
            console.log(statusSelecionado)
            console.log(loas)
-           let processo;
-             processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado), loas: loas.current})
-
-             console.log("process")
-             console.log(processo)
-             const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
-             const saveProc = await saveProcess(objectToDataBase);
-             contadorProcessos++
-             console.log("$$")
-             console.log(tarefas.length)
-             console.log(i)
-           
+           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado), loas: loas.current})
+           console.log("process")
+           console.log(processo)
+           const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
+           const saveProc = await saveProcess(objectToDataBase);
+           contadorProcessos++
+           console.log("$$")
+           console.log(tarefas.length)
+           console.log(i)
          }
          if(stopProcessoRef.current){
           console.log("saiu")
@@ -117,26 +114,15 @@ function TriagemSapiens() {
           break;
         }
 
-       
-         VerificarSeAindExisteProcesso = false;
-         console.log(cookie)
-         console.log(Etiqueta)
-         console.log(usuario_id)
-          console.log("Time out")
 
+         tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
+         if(tarefas.length == 0){
+          VerificarSeAindExisteProcesso = false;
+         }
 
-            tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
-            console.log("EXISTEEEEE")
-            console.log(tarefas)
-            console.log("TMNC")
-            console.log(typeof(tarefas))
-            if(tarefas.length == 0){
-             VerificarSeAindExisteProcesso = false;
-            }
-  
-           loas.current = false;
-           setIsLoading(false)
        }
+       loas.current = false;
+       setIsLoading(false)
 
 
     }catch(e){
