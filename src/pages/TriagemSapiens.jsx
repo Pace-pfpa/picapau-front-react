@@ -10,11 +10,11 @@ import { getTarefas } from '../visaoRequest/getTarefas';
 import { loginVisao } from '../visaoRequest/loginRequest';
 import { getUsuarioRequest } from '../visaoRequest/getUsuarioRequest';
 import { getInformationFromPicaPau } from '../visaoRequest/getInformationFromPicaPau';
-import { TriagemSapiensComponent } from '../components/TriagemSapiensComponent';
-import { FinalizandoTriagem } from '../components/finalizandoTriagem';
-import { IniciandoTriagem } from '../components/IniciandoTriagem';
+import { TriagemSapiensComponent } from '../../src/components/TriagemSapiensComponent';
+import { FinalizandoTriagem } from '../components/FinalizandoTriagem';
+import { IniciandoTriagem } from '../../src/components/IniciandoTriagem';
 import { buildObjectProcess } from '../Help/BuildObjectProcess';
-import { saveProcess } from '../API/UserAPI/saveProcess';
+import { saveProcess } from '../API/UserAPI/SaveProcess';
 import { jwtDecode } from 'jwt-decode';
 
 

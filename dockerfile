@@ -1,17 +1,19 @@
-# Use uma imagem Node.js como base
-FROM node:14
+# This is the newer version
 
-# Configurar o diretório de trabalho
+FROM node:18-alpine
+
 WORKDIR /app
 
-# Copiar os arquivos do aplicativo para o contêiner
-COPY . .
+COPY package.json .
 
-# Instalar as dependências
 RUN npm install
 
-# Expor a porta 8080
-EXPOSE 8080
+RUN npm i -g serve
 
-# Comando para iniciar o aplicativo
-CMD ["npm", "run","dev"]
+COPY . .
+
+RUN npm run build
+
+EXPOSE 8002
+
+CMD [ "serve", "-s", "dist", "-l", "8002" ]

@@ -1,4 +1,4 @@
-import loadBanco from '../styles/LoadBancoDeDados.module.css'
+import loadBanco from '../styles/loadBancoDeDados.module.css'
 
 export const LoadBancoDeDados = () => {
 
