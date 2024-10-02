@@ -1,12 +1,16 @@
 import { useState } from "react";
 import styles from '../../styles/consultaAdvogado.module.css';
 import { buscaAdvogado } from "../../API/AdvogadoAPI/buscaAdvogado";
+import { deleteAdvogado } from "../../API/AdvogadoAPI/deleteAdvogado";
+import { DeleteConfirmationModal } from "./DeleteConfirmationModal";
 
 export const ConsultaAdvogado = () => {
   const [regiao, setRegiao] = useState("");
   const [advogados, setAdvogados] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [advogadoToDelete, setAdvogadoToDelete] = useState(null);
 
   const regioes = ["PRF1", "PRF2", "PRF3", "PRF4", "PRF5", "PRF6"];
 
@@ -27,6 +31,29 @@ export const ConsultaAdvogado = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleDelete = async () => {
+    try {
+        const response = await deleteAdvogado(advogadoToDelete);
+        if (response instanceof Error) {
+            throw new Error('Oops!')
+        }
+        setAdvogados(advogados.filter(advogado => advogado.id !== advogadoToDelete));
+        setShowModal(false);
+    } catch (error) {
+        setError('Erro ao deletar advogado');
+        setShowModal(false)
+    }
+  }
+
+  const openModal = (advogadoId) => {
+    setAdvogadoToDelete(advogadoId);
+    setShowModal(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   return (
@@ -53,9 +80,9 @@ export const ConsultaAdvogado = () => {
         </button>
       </form>
 
-      {error && <p>{error}</p>}
+    {error && <p>{error}</p>}
 
-      {advogados.length > 0 && (
+    {advogados.length > 0 && (
         <div className={styles.advogadoList}>
           <h3>Advogados na Região {regiao}:</h3>
           <ul>
@@ -63,17 +90,27 @@ export const ConsultaAdvogado = () => {
               <li key={index}>
                 <strong>Nome:</strong> {advogado.nome}<br/><strong>OAB:</strong>{" "}
                 {advogado.oab}
+                <span className={styles.deleteIcon} onClick={() => openModal(advogado.id)} title="Excluir Advogado">
+                🗑️
+                </span>
               </li>
             ))}
           </ul>
         </div>
-      )}
+    )}
 
-      {advogados.length === 0 && !loading && !error && (
+    {advogados.length === 0 && !loading && !error && (
         <p className={styles.noResultMessage}>
           Nenhum advogado encontrado para essa região.
         </p>
-      )}
+    )}
+
+    {showModal && (
+        <DeleteConfirmationModal
+          onConfirm={handleDelete}
+          onCancel={closeModal}
+        />
+    )}
     </div>
   );
 };

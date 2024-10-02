@@ -72,3 +72,10 @@ select {
   font-size: 14px;
   color: #666;
 }
+
+.deleteIcon {
+    margin-left: 10px;
+    color: red;
+    cursor: pointer;
+    float: right;
+}
