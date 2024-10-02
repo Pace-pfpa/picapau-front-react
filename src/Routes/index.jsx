@@ -9,6 +9,7 @@ import { RecuperarSenha } from '../pages/RecuperarSenha'
 import { PageInteressados } from '../pages/PageInteressados'
 import { ServidorManutencao } from '../pages/ServidorManutencao'
 import { useState } from 'react'
+import { Advogados } from '../pages/Advogado'
 
 
 
@@ -40,6 +41,11 @@ export const AppRouter = () => {
                     <Route path='/interessados' exact element={
                         <TriagemLayout>
                             <PageInteressados/>
+                        </TriagemLayout>
+                    } />
+                    <Route path='/advogados' exact element={
+                        <TriagemLayout>
+                            <Advogados />
                         </TriagemLayout>
                     } />
                     <Route path='/' exact element={<LoginPicaPau/>} />

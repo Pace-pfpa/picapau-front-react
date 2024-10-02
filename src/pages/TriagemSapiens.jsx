@@ -1,7 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import axios from 'axios';
 import '../styles/Index.css'
-//import { Link } from 'react-router-dom'
 import agupng from '../assets/AGU.png'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
 import LinearIndeterminate from '../components/Progress/LinearProgresss';
@@ -38,7 +36,7 @@ function TriagemSapiens() {
     }
   verificarLogin();
   return () => verificarLogin()
-}, []);;
+}, []);
 
   const verificarLogin = async () => {
 

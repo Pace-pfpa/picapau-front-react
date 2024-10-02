@@ -7,31 +7,49 @@ import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 import { UserStatus } from '../components/UserStatus';
+import { jwtDecode } from 'jwt-decode';
 
-
-const pages = ['Triagem', 'Histórico de Processos', 'Interessados'];
+const pagesRegular = ['Triagem', 'Histórico de Processos', 'Interessados'];
+const pagesAdmin = ['Triagem', 'Histórico de Processos', 'Interessados', 'Advogados'];
 const settings = ['Logout'];
 
 export const  ResponsiveAppBar = ()=> {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const [isOnline, setInsOnline] = React.useState(navigator.onLine)
+  const [showAdvogado, setShowAdvogado] = React.useState(false);
   const navigate = useNavigate();
 
+  // VERIFICAR ROLE
+  let pages = [];
 
+  React.useEffect(() => {
+    if(jwtDecode(localStorage.getItem("token")).role == 0){
+      setShowAdvogado(true);
+    }
+  verificarLogin();
+  return () => verificarLogin()
+}, []);
+
+  const verificarLogin = async () => {
+
+    if(localStorage.getItem("sapiensCPF") == null || localStorage.getItem("sapiensSenha") == null || localStorage.getItem("token") == null){
+      navigate("/");
+    }
+  }
+
+  {showAdvogado ? (
+    pages = pagesAdmin
+  ) : (
+    pages = pagesRegular
+  )}
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
-  };
-  const handleOpenUserMenu = (event) => {
-    setAnchorElUser(event.currentTarget);
   };
 
   const handleCloseNavMenu = (value) => {
@@ -41,6 +59,8 @@ export const  ResponsiveAppBar = ()=> {
       navigate("/historico");
     }else if(value.trim() == "Interessados"){
       navigate("/interessados");
+    } else if (value.trim() == "Advogados") {
+      navigate("/advogados")
     }
     setAnchorElNav(null);
   };
