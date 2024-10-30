@@ -20,7 +20,6 @@ import { jwtDecode } from 'jwt-decode';
 function TriagemSapiens() {
   const navigate = useNavigate();
   const [Etiqueta, setEtiqueta] = useState("");
-  const [isChecked, setIsChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [IsContador, setIsContador] = useState(false)
   const stopProcessoRef = useRef(false);
@@ -46,90 +45,123 @@ function TriagemSapiens() {
   }
 
   async function handleSubmit(event) {
-  event.preventDefault(); 
+    event.preventDefault(); 
   
   
-  setInializandoTriagem(true)
+    setInializandoTriagem(true);
     const data = {
       "login": {
         "cpf": `${localStorage.getItem("sapiensCPF")}`,
         "senha": `${localStorage.getItem("sapiensSenha")}`
       },
-      
     }
-    
-
 
 
     try{
-      console.log(Number(statusSelecionado) == 1 || Number(statusSelecionado) == 2 ? true : false)
-      console.log(isChecked)
+
       const cookie = await loginVisao(data.login);
       const usuario =  (await getUsuarioRequest(cookie));
-      console.log(Number(statusSelecionado) == 2)
+      const usuario_id = `${usuario[0].id}`; 
+      let tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
+
+      setInializandoTriagem(false)
+      setIsLoading(true);
+      let VerificarSeAindExisteProcesso = true;
+      let contadorProcessos = 0;
+      
       if(Number(statusSelecionado) == 2){
-        console.log(statusSelecionado)
-        console.log("dasdasdadasdsadsa")
-        console.log(loas)
         loas.current = true;
-        console.log(loas)
       }
-       const usuario_id = `${usuario[0].id}`; 
-       let tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
-       console.log(tarefas.length)
-       console.log("atrefas")
-       setInializandoTriagem(false)
-       setIsLoading(true);
-       let VerificarSeAindExisteProcesso = true;
-       let contadorProcessos = 0;
-       while(VerificarSeAindExisteProcesso){
-         for(var i = 0; i <= tarefas.length - 1; i++){
-           if(stopProcessoRef.current){
-             console.log("saiu")
-             console.log("parou processo")
-             setIsContador(false)
-             break;
-           }
-           setIsContador(contadorProcessos+1)
-           console.log(Etiqueta)
-           console.log(statusSelecionado)
-           console.log(loas)
-           const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado), loas: loas.current})
-           console.log("process")
-           console.log(processo)
-           const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
-           const saveProc = await saveProcess(objectToDataBase);
-           contadorProcessos++
-           console.log("$$")
-           console.log(tarefas.length)
-           console.log(i)
-         }
-         if(stopProcessoRef.current){
-          console.log("saiu")
+
+
+      while (VerificarSeAindExisteProcesso) {
+        for (let i = 0; i <= tarefas.length - 1; i++) {
+          if (stopProcessoRef.current) {
+            console.log("Processo interrompido pelo usuário");
+            setIsContador(false);
+            break;
+          }
+
+          setIsContador(contadorProcessos + 1);
+
+          try {
+            const processo = await getInformationFromPicaPau({
+              login: data.login,
+              etiqueta: Etiqueta,
+              tarefa: tarefas[i],
+              readDosprevAge: Number(statusSelecionado),
+              loas: loas.current
+            });
+
+            const objectToDataBase = await buildObjectProcess(tarefas[i], processo, tarefas[i]);
+            await saveProcess(objectToDataBase);
+            contadorProcessos++;
+          } catch (error) {
+            console.error("Erro ao processar tarefa:", error);
+            alert("Ocorreu um erro ao processar a triagem. Por favor, verifique o processo e tente novamente.");
+            VerificarSeAindExisteProcesso = false;
+            setIsLoading(false);
+            setIsContador(false);
+            return;
+          }
+        }
+
+        if (stopProcessoRef.current) {
+          console.log("Processo interrompido pelo usuário");
           stopProcessoRef.current = false;
-          console.log("parou processo")
-          setIsContador(false)
+          setIsContador(false);
           break;
         }
 
-
-         tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
-         if(tarefas.length == 0){
+        tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
+        if (tarefas.length === 0) {
           VerificarSeAindExisteProcesso = false;
-         }
+        }
+      }
 
-       }
-       loas.current = false;
-       setIsLoading(false)
+      loas.current = false;
+      setIsLoading(false);
+       
+      //  while(VerificarSeAindExisteProcesso){
+      //    for(var i = 0; i <= tarefas.length - 1; i++){
+      //      if(stopProcessoRef.current){
+      //        setIsContador(false)
+      //        break;
+      //      }
+      //      setIsContador(contadorProcessos+1)
+
+      //      const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado), loas: loas.current})
+
+      //      const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
+      //      const saveProc = await saveProcess(objectToDataBase);
+      //      contadorProcessos++
+
+      //    }
+
+      //    if(stopProcessoRef.current){
+      //     stopProcessoRef.current = false;
+      //     setIsContador(false)
+      //     break;
+      //   }
 
 
-    }catch(e){
-      console.log("erro triagemk")
-      console.log(e)
+      //    tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
+      //    if(tarefas.length == 0){
+      //     VerificarSeAindExisteProcesso = false;
+      //    }
+
+      //  }
+      //  loas.current = false;
+      //  setIsLoading(false)
+
+
+    } catch(e) {
+      console.log("Erro na triagem:", e);
+      alert("Erro ao iniciar a triagem. Por favor, verifique os dados e tente novamente.");
+      setIsLoading(false);
+      setIsContador(false);
     }
     
-    
-
 
 
     setIsContador(false);

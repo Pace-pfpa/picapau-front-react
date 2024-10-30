@@ -4,8 +4,6 @@ import { picapauApiSapiens } from "../global";
 export async function getInformationFromPicaPau(objetoArvoreDocumento){
     console.log(objetoArvoreDocumento)
 
-    const UrlLogin = "http://localhost:3000/samir/getInformationFromSapienForSamir"
-
     try{
         const response = await axios.post(`${picapauApiSapiens}getInformationFromSapienForSamir`,objetoArvoreDocumento);
         
