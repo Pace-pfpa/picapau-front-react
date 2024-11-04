@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import '../styles/Index.css'
 import agupng from '../assets/AGU.png'
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
-import { TriagemSapiensComponent } from '../components/TriagemSapiensComponent';
+import { Modal } from '../components/modal/Modal';
 import { interessados } from '../visaoRequest/interessados';
 import { CircularProgresss } from '../components/Progress/CircularProgresss';	
 import { AlertsError } from '../components/Alerts/AlertsError';
@@ -14,7 +14,8 @@ export const PageInteressados = () => {
    const [loading, setLoading] = useState(false);
    const [error, setError] = useState(false);
    const [Etiqueta, setEtiqueta] = useState("");
-
+   const [resultado, setResultado] = useState(null);
+   const [showModal, setShowModal] = useState(false); 
 
 
 
@@ -27,6 +28,8 @@ export const PageInteressados = () => {
          setError(false)
         setLoading(true)
         const response = await interessados(Etiqueta)
+        setResultado(response);
+        setShowModal(true);
         setLoading(false)
         setError(false)
     } catch (error) {
@@ -83,9 +86,11 @@ export const PageInteressados = () => {
     {/* <div className='classPararTriagem'>
         <button className='botaoPararTriagem' >Parar Triagem</button>
       </div>  */}
-      <div className='blocoComponenteTriagem'>
-        
-      </div>
+      <div className='blocoComponenteTriagem'></div>
+      {showModal && (
+        <Modal onClose={() => setShowModal(false)} resultado={resultado} />
+      )}
+
     </LayoutLoginRegister>
   )
 };
