@@ -28,7 +28,8 @@ export const  ResponsiveAppBar = ()=> {
   let pages = [];
 
   React.useEffect(() => {
-    if(jwtDecode(localStorage.getItem("token")).role == 0){
+    const userRole = jwtDecode(localStorage.getItem("token")).role;
+    if(userRole === 2){
       setShowAdvogado(true);
     }
   verificarLogin();

@@ -27,10 +27,16 @@ function TriagemSapiens() {
   const loas = useRef(false);
   const [statusSelecionado, setStatusSelecionado] = useState('0');
   const [iniciarLoas, setIniciarLoas] = useState(false);
+  const [admin, setAdmin] = useState(false);
   
 
   useEffect(() => {
-    if(jwtDecode(localStorage.getItem("token")).role == 0){
+    const userRole = jwtDecode(localStorage.getItem("token")).role;
+    if(userRole === 2) {
+      setIniciarLoas(true);
+      console.log('ADMIN')
+      setAdmin(true);
+    } else if (userRole === 0) {
       setIniciarLoas(true);
     }
   verificarLogin();
@@ -90,7 +96,8 @@ function TriagemSapiens() {
               etiqueta: Etiqueta,
               tarefa: tarefas[i],
               readDosprevAge: Number(statusSelecionado),
-              loas: loas.current
+              loas: loas.current,
+              admin: admin
             });
 
             const objectToDataBase = await buildObjectProcess(tarefas[i], processo, tarefas[i]);
@@ -121,38 +128,6 @@ function TriagemSapiens() {
 
       loas.current = false;
       setIsLoading(false);
-       
-      //  while(VerificarSeAindExisteProcesso){
-      //    for(var i = 0; i <= tarefas.length - 1; i++){
-      //      if(stopProcessoRef.current){
-      //        setIsContador(false)
-      //        break;
-      //      }
-      //      setIsContador(contadorProcessos+1)
-
-      //      const processo = await getInformationFromPicaPau({login: data.login, etiqueta: Etiqueta, tarefa: tarefas[i], readDosprevAge: Number(statusSelecionado), loas: loas.current})
-
-      //      const objectToDataBase = await buildObjectProcess(tarefas[i],processo, tarefas[i])
-      //      const saveProc = await saveProcess(objectToDataBase);
-      //      contadorProcessos++
-
-      //    }
-
-      //    if(stopProcessoRef.current){
-      //     stopProcessoRef.current = false;
-      //     setIsContador(false)
-      //     break;
-      //   }
-
-
-      //    tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
-      //    if(tarefas.length == 0){
-      //     VerificarSeAindExisteProcesso = false;
-      //    }
-
-      //  }
-      //  loas.current = false;
-      //  setIsLoading(false)
 
 
     } catch(e) {
@@ -190,7 +165,11 @@ function pararTriagem(){
   return (
     <LayoutLoginRegister>
       <form className="login-form" onSubmit={handleSubmit}>
-
+        {admin && (
+          <p style={
+            {color: "red"}
+          }>MODO ADMIN</p>
+        )}
         <span className="login-form-title">TRIAGEM SAPIENS</span>
 
         <span className="login-form-title">

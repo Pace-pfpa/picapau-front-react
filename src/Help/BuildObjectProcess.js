@@ -2,7 +2,7 @@ export async function buildObjectProcess(data,status,tarefa){
     let valorStatus;
     const agora = new Date();
     const isoString = agora.toISOString();
-    const sqlDateTime = isoString.replace('T', ' ').substring(0, 19);
+
     if(status.impeditivos){
         valorStatus = '1';
     }else if(status.warning){

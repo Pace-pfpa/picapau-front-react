@@ -3,9 +3,6 @@ import { picapauApiSapiens } from "../global";
 
 export async function getUsuarioRequest(data){
 
-    
-    const UrlLogin = "http://localhost:3000/samir/getUsuarioController"
-
     try{
         const response = await axios.post(`${picapauApiSapiens}getUsuarioController`,{Coockie: data});
         

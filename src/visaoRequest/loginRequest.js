@@ -3,9 +3,6 @@ import { picapauApiSapiens } from "../global";
 
 export async function loginVisao(data){
 
-
-    const UrlLogin = "http://localhost:3000/samir/login"
-
     try{
         const response = await axios.post(`${picapauApiSapiens}login`,data);
         
