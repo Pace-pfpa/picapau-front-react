@@ -19,15 +19,16 @@ import { jwtDecode } from 'jwt-decode';
 
 function TriagemSapiens() {
   const navigate = useNavigate();
-  const [Etiqueta, setEtiqueta] = useState("");
+  const [etiqueta, setEtiqueta] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [IsContador, setIsContador] = useState(false)
+  const [isContador, setIsContador] = useState(false)
   const stopProcessoRef = useRef(false);
   const [inializandoTriagem, setInializandoTriagem] = useState(false)
   const loas = useRef(false);
   const [statusSelecionado, setStatusSelecionado] = useState('0');
   const [iniciarLoas, setIniciarLoas] = useState(false);
   const [admin, setAdmin] = useState(false);
+  const [minuta, setMinuta] = useState(false);
   
 
   useEffect(() => {
@@ -68,7 +69,7 @@ function TriagemSapiens() {
       const cookie = await loginVisao(data.login);
       const usuario =  (await getUsuarioRequest(cookie));
       const usuario_id = `${usuario[0].id}`; 
-      let tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
+      let tarefas = await getTarefas(cookie, etiqueta, usuario_id);
 
       setInializandoTriagem(false)
       setIsLoading(true);
@@ -91,13 +92,15 @@ function TriagemSapiens() {
           setIsContador(contadorProcessos + 1);
 
           try {
+            const tipo_triagem = Number(statusSelecionado);
             const processo = await getInformationFromPicaPau({
               login: data.login,
-              etiqueta: Etiqueta,
+              etiqueta: etiqueta,
               tarefa: tarefas[i],
-              readDosprevAge: Number(statusSelecionado),
+              readDosprevAge: tipo_triagem,
               loas: loas.current,
-              admin: admin
+              admin: admin,
+              subirMinuta: minuta
             });
 
             const objectToDataBase = await buildObjectProcess(tarefas[i], processo, tarefas[i]);
@@ -120,7 +123,7 @@ function TriagemSapiens() {
           break;
         }
 
-        tarefas = await getTarefas(cookie, Etiqueta, usuario_id);
+        tarefas = await getTarefas(cookie, etiqueta, usuario_id);
         if (tarefas.length === 0) {
           VerificarSeAindExisteProcesso = false;
         }
@@ -177,30 +180,40 @@ function pararTriagem(){
         </span>
 
         <div className="wrap-input">
-          <input className={Etiqueta != "" ? 'has-val input' : 'input'}
+          <input className={etiqueta != "" ? 'has-val input' : 'input'}
             type="text"
-            value={Etiqueta}
+            value={etiqueta}
             onChange={e => setEtiqueta(e.target.value)}
           />
           <span className="focus-input" data-placeholder="Etiqueta"></span>
         </div>
         
         <div className='checkboxMaternidade'>
-      
-      <p className='selecioneBeneficio'>Selecione o benefício</p>
-      <select 
-        id='status'
-        value={statusSelecionado}
-        onChange={(e) => setStatusSelecionado(e.target.value)}>
-          <option value="0">Aposentadoria Rural</option>
-          <option value="1">Salário Maternidade</option>
-          {iniciarLoas && (
-             <option value="2">Loas</option>
-          )}
-        </select>
-      
-      
-    </div>
+          <p className='selecioneBeneficio'>Selecione o benefício</p>
+          <select 
+            id='status'
+            value={statusSelecionado}
+            onChange={(e) => setStatusSelecionado(e.target.value)}>
+              <option value="0">Aposentadoria Rural</option>
+              <option value="1">Salário Maternidade</option>
+              {iniciarLoas && (
+                <option value="2">Loas</option>
+              )}
+          </select>
+        </div>
+
+        {admin && (
+          <div className='checkboxMinuta'>
+            <input 
+              type="checkbox" 
+              name="minuta" 
+              id="minuta"
+              checked={minuta}
+              onChange={e => setMinuta(e.target.checked)}
+            />
+            <label htmlFor="minuta" className='minuta-question'>Deseja incluir os impeditivos na minuta?</label>
+          </div>
+        )}
 
         <div className="container-login-form-btn">
           <button className="login-form-btn">Triagem Sapiens</button>
@@ -209,18 +222,17 @@ function pararTriagem(){
         <div className="container-login-form-btn">
           <button className="botaoSair" onClick={sair}>SAIR</button>
         </div>        
-        
       </form>
       <div className='classPararTriagem'>
           <button className='botaoPararTriagem' onClick={pararTriagem}>Parar Triagem</button>
-        </div> 
-        <div className='blocoComponenteTriagem'>
-          {stopProcessoRef.current == false && <TriagemSapiensComponent processosCount={IsContador}/>}
-          {isLoading && <LinearIndeterminate/>}
-          {stopProcessoRef.current && <FinalizandoTriagem/>}
-          {inializandoTriagem && <IniciandoTriagem/>}
-        </div>
-      </LayoutLoginRegister>
+      </div> 
+      <div className='blocoComponenteTriagem'>
+        {stopProcessoRef.current == false && <TriagemSapiensComponent processosCount={isContador}/>}
+        {isLoading && <LinearIndeterminate/>}
+        {stopProcessoRef.current && <FinalizandoTriagem/>}
+        {inializandoTriagem && <IniciandoTriagem/>}
+      </div>
+    </LayoutLoginRegister>
   )
 }
 

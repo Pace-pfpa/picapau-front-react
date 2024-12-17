@@ -6,7 +6,6 @@ export async function getTarefas(cookie, etiqueta, usuario_id){
     console.log(cookie)
     console.log(etiqueta)
     console.log(usuario_id)
-    const UrlLogin = "http://localhost:3000/samir/getTarefaController"
 
     try{
         const response = await axios.post(`${picapauApiSapiens}getTarefaController`,{cookie: cookie, etiqueta: etiqueta, usuario_id: usuario_id});

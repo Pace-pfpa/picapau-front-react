@@ -217,8 +217,30 @@
 }
 
 .checkboxMaternidade{
-    margin-bottom: 20px;
     color: white;
+}
+
+.checkboxMinuta {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 10px;
+}
+
+.checkboxMinuta input {
+  width: 18px;
+  height: 18px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.checkboxMinuta label {
+  margin-bottom: 0;
+}
+
+.minuta-question {
+  color: #fff;
+  font-weight: 400;
 }
 
 .labelChakput{
