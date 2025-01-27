@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { findAllProcess } from '../API/UserAPI/findAllProcess';
 import { useNavigate } from 'react-router-dom';
 import { TotaisProcessosDetalhado } from '../components/TotaisProcessosDetalhados';
@@ -6,13 +6,8 @@ import { deleteProcessById } from '../API/UserAPI/deleteProcessById';
 import { TelaInformarExisteProcessoNoBanco } from '../components/TelaInformarExisteProcessoNoBanco';
 import { LoadBancoDeDados } from '../components/LoadBancoDeDados';
 
-
-
-
-
 export const HistoricoTriagem = ()=> {
   const dataAtual = new Date().toISOString().split('T')[0];
-  const [linhaSelecionada, setLinhaSelecionada] = useState(null);
   const [dados, setDados] = useState([]);
   const [dataSelecionada, setDataSelecionada] = useState(dataAtual);
   const [statusSelecionado, setStatusSelecionado] = useState('');
@@ -83,7 +78,7 @@ const deletarProcessoPorId = async (value) => {
     setDados(elementosAtualizado);
     
   }catch{
-
+    console.log('oi')
   }
 }
 
@@ -105,9 +100,9 @@ const deletarProcessoPorId = async (value) => {
         value={statusSelecionado}
         onChange={(e) => setStatusSelecionado(e.target.value)}>
           <option value="0">Tudo</option>
-          <option value="1">Sucesso</option>
-          <option value="2">Aviso</option>
-          <option value="3">Error</option>
+          <option value="1">Impeditivos</option>
+          <option value="2">Aviso/Erro</option>
+          <option value="3">Limpo</option>
         </select>
         <br />
         <button onClick={async () =>  filtrarDados()}>Filtrar</button>

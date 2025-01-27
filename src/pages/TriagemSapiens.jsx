@@ -15,8 +15,6 @@ import { buildObjectProcess } from '../Help/BuildObjectProcess';
 import { saveProcess } from '../API/UserAPI/SaveProcess';
 import { jwtDecode } from 'jwt-decode';
 
-
-
 function TriagemSapiens() {
   const navigate = useNavigate();
   const [etiqueta, setEtiqueta] = useState("");
@@ -108,7 +106,7 @@ function TriagemSapiens() {
             contadorProcessos++;
           } catch (error) {
             console.error("Erro ao processar tarefa:", error);
-            alert("Ocorreu um erro ao processar a triagem. Por favor, verifique o processo e tente novamente.");
+            alert(`Ocorreu um erro ao processar a triagem: ${error.message}`);
             VerificarSeAindExisteProcesso = false;
             setIsLoading(false);
             setIsContador(false);
