@@ -17,6 +17,7 @@ export const LoginPicaPau = () => {
   const [userIncorret, setUserIncorret] = useState(false);
   const navigate = useNavigate();
 
+  const picapauDocs = import.meta.env.VITE_PICAPAU_DOCS;
     
   async function handleSubmit(event) {
     event.preventDefault();
@@ -111,6 +112,12 @@ export const LoginPicaPau = () => {
           <Link to="/recuperarSenha" className="txt2">
             Recuperar Senha
           </Link>
+       </div>
+       <div className='docsRedirect'>
+        <a
+         href={`${picapauDocs}`}
+         target='_blank' rel="noreferrer"
+         >Documentação técnica</a>
        </div>
 
         

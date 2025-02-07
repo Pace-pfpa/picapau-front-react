@@ -526,3 +526,15 @@
   align-items: center;
 }
 
+.docsRedirect {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.docsRedirect a {
+  color: rgb(218, 18, 18);
+}
+
+.docsRedirect a:hover {
+  color: rgb(238, 144, 144);
+}
