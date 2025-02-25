@@ -105,9 +105,10 @@ function TriagemSapiens() {
             await saveProcess(objectToDataBase);
             contadorProcessos++;
           } catch (error) {
-            console.error("Erro ao processar tarefa:", error);
-            alert(`Ocorreu um erro ao processar a triagem: ${error.message}`);
-            VerificarSeAindExisteProcesso = false;
+            console.error("Erro ao processar tarefa:", error.message);
+            alert(
+              `Ocorreu um erro ao processar a triagem: ${error.message}`
+            );
             setIsLoading(false);
             setIsContador(false);
             return;

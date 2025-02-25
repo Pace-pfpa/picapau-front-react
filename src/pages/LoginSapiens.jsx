@@ -14,6 +14,7 @@ export const LoginSapiens = () => {
   const [cpf, setCpf] = useState("");
   const [password, setPassword] = useState("");
   const [userIncorret, setUserIncorret] = useState(false);
+  const [messageError, setMessageError] = useState("");
   const navigate = useNavigate();
 
     
@@ -26,21 +27,23 @@ export const LoginSapiens = () => {
     }
     try{
       const response = await axios.post(`${picapauApiSapiens}login`,data)
-      if(response.status == 200){
+      console.log(response.status)
+      if (response.status === 200) {
         console.log(response.data)
         localStorage.setItem("sapiensCPF", cpf);
         localStorage.setItem("sapiensSenha", password);
         navigate("/triagem"); 
-
-      } else{
+      }
+    }catch(e){
+      if (e.response.status === 401) {
         console.log('incorreto user')
         setUserIncorret(true)
-      } 
-    }catch(e){
-      setUserIncorret(true)
+        setMessageError('Usuário ou senha incorretos')
+      } else {
+        setUserIncorret(true)
+        setMessageError('Servidor fora do ar!')
+      }
     }
-  
-      
     
   }
 
@@ -72,7 +75,7 @@ export const LoginSapiens = () => {
             type="text"
             value={cpf}
             onChange={e => setCpf(e.target.value)}
-            onFocus={e => handleClick()}
+            onFocus={() => handleClick()}
           />
           <span className="focus-input" data-placeholder="cpf"></span>
         </div>
@@ -82,11 +85,11 @@ export const LoginSapiens = () => {
             type="password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            onFocus={e => handleClick()}
+            onFocus={() => handleClick()}
           />
           <span className="focus-input" data-placeholder="Password"></span>
         </div>
-        {userIncorret && <p className='userIncorrect'>User ja existe</p>}
+        {userIncorret && <p className='userIncorrect'>{messageError}</p>}
         <div className="container-login-form-btn">
           <button className="login-form-btn">Login</button>
         </div>
