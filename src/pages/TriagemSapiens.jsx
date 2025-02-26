@@ -201,7 +201,7 @@ function pararTriagem(){
           </select>
         </div>
 
-        {admin && (
+        {iniciarLoas && (
           <div className='checkboxMinuta'>
             <input 
               type="checkbox" 
