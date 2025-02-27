@@ -10,6 +10,7 @@ import { PageInteressados } from '../pages/PageInteressados'
 import { ServidorManutencao } from '../pages/ServidorManutencao'
 import { useState } from 'react'
 import { Advogados } from '../pages/Advogado'
+import { PageCobranca } from '../pages/Cobranca'
 
 
 
@@ -38,7 +39,7 @@ export const AppRouter = () => {
                         <HistoricoTriagem/>
                     </TriagemLayout>
                     }/>
-                    <Route path='/interessados' exact element={
+                    <Route path='/envolvidos' exact element={
                         <TriagemLayout>
                             <PageInteressados/>
                         </TriagemLayout>
@@ -46,6 +47,11 @@ export const AppRouter = () => {
                     <Route path='/advogados' exact element={
                         <TriagemLayout>
                             <Advogados />
+                        </TriagemLayout>
+                    } />
+                    <Route path='/cobranca' exact element={
+                        <TriagemLayout>
+                            <PageCobranca />
                         </TriagemLayout>
                     } />
                     <Route path='/' exact element={<LoginPicaPau/>} />

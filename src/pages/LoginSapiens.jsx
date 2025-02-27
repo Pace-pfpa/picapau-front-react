@@ -35,13 +35,14 @@ export const LoginSapiens = () => {
         navigate("/triagem"); 
       }
     }catch(e){
-      if (e.response.status === 401) {
+      if (e.response?.status === 401) {
         console.log('incorreto user')
         setUserIncorret(true)
         setMessageError('Usuário ou senha incorretos')
       } else {
         setUserIncorret(true)
         setMessageError('Servidor fora do ar!')
+
       }
     }
     

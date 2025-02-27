@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from 'react-router-dom';
+import userOnline from '../assets/UserOnline.png';
+import userOffline from '../assets/Offilne.png'
 
 export const UserStatus = () => {
     const [isOnline, setIsOnline] = useState(navigator.onLine);
@@ -8,10 +9,10 @@ export const UserStatus = () => {
     useEffect(() => {
         // Pré-carregar ambas as imagens
         const onlineImg = new Image();
-        onlineImg.src = "src/assets/UserOnline.png";
+        onlineImg.src = {userOnline};
 
         const offlineImg = new Image();
-        offlineImg.src = "src/assets/Offilne.png";
+        offlineImg.src = {userOffline};
 
         // Definir o src baseado no estado inicial
         setImgSrc(isOnline ? onlineImg.src : offlineImg.src);

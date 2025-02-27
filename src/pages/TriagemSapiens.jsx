@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import '../styles/Index.css'
-import agupng from '../assets/AGU.png'
+import agupng  from '../assets/AGU.png';
 import { LayoutLoginRegister } from '../components/login-register/LoginRegisterIndex';
 import LinearIndeterminate from '../components/Progress/LinearProgresss';
 import { useNavigate } from 'react-router-dom';
@@ -226,7 +226,7 @@ function pararTriagem(){
           <button className='botaoPararTriagem' onClick={pararTriagem}>Parar Triagem</button>
       </div> 
       <div className='blocoComponenteTriagem'>
-        {stopProcessoRef.current == false && <TriagemSapiensComponent processosCount={isContador}/>}
+        {!stopProcessoRef.current && <TriagemSapiensComponent processosCount={isContador}/>}
         {isLoading && <LinearIndeterminate/>}
         {stopProcessoRef.current && <FinalizandoTriagem/>}
         {inializandoTriagem && <IniciandoTriagem/>}

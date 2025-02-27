@@ -10,12 +10,13 @@ import Container from '@mui/material/Container';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
+import imgPicapau from '../assets/iconNameEPicaPau.png';
 import { useNavigate } from 'react-router-dom';
 import { UserStatus } from '../components/UserStatus';
 import { jwtDecode } from 'jwt-decode';
 
-const pagesRegular = ['Triagem', 'Histórico de Processos', 'Interessados'];
-const pagesAdmin = ['Triagem', 'Histórico de Processos', 'Interessados', 'Advogados'];
+const pagesRegular = ['Triagem', 'Histórico de Processos', 'Envolvidos', 'Cobrança'];
+const pagesAdmin = ['Triagem', 'Histórico de Processos', 'Envolvidos', 'Cobrança', 'Advogados'];
 const settings = ['Logout'];
 
 export const  ResponsiveAppBar = ()=> {
@@ -56,11 +57,13 @@ export const  ResponsiveAppBar = ()=> {
   const handleCloseNavMenu = (value) => {
     if(value.trim() == "Triagem"){
       navigate("/triagem");
-    }else if(value.trim() == "Histórico de Processos"){
+    }else if(value.trim() === "Histórico de Processos"){
       navigate("/historico");
-    }else if(value.trim() == "Interessados"){
-      navigate("/interessados");
-    } else if (value.trim() == "Advogados") {
+    }else if(value.trim() === "Envolvidos"){
+      navigate("/envolvidos");
+    } else if (value.trim() === "Cobrança") {
+      navigate("/cobranca");
+    } else if (value.trim() === "Advogados") {
       navigate("/advogados")
     }
     setAnchorElNav(null);
@@ -80,7 +83,7 @@ export const  ResponsiveAppBar = ()=> {
         <Toolbar disableGutters>
           
           
-          <img className='imagemPicapau' src="src/assets/iconNameEPicaPau.png" alt="" />
+          <img className='imagemPicapau' src={imgPicapau} alt="" />
             
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
