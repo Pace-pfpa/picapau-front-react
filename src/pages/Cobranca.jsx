@@ -14,13 +14,14 @@ import { FinalizandoTriagem } from '../components/FinalizandoTriagem';
 import { IniciandoTriagem } from '../../src/components/IniciandoTriagem';
 
 export const PageCobranca = () => {
-   const navigate = useNavigate();
-   const [isLoading, setIsLoading] = useState(false);
-   const [error, setError] = useState(false);
-   const [etiqueta, setEtiqueta] = useState("");
-   const [inializandoTriagem, setInializandoTriagem] = useState(false);
-   const [isContador, setIsContador] = useState(false);
-   const stopProcessoRef = useRef(false);
+  const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
+  const [etiqueta, setEtiqueta] = useState("");
+  const [inializandoTriagem, setInializandoTriagem] = useState(false);
+  const [isContador, setIsContador] = useState(false);
+  const [minuta, setMinuta] = useState(false);
+  const stopProcessoRef = useRef(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -63,7 +64,8 @@ export const PageCobranca = () => {
                     await cobranca({
                       login: data.login,
                       etiqueta: etiqueta,
-                      tarefa: tarefas[i]
+                      tarefa: tarefas[i],
+                      subirMinuta: minuta
                     });
                     contadorProcessos++;
                 } catch (error) {
@@ -113,6 +115,20 @@ export const PageCobranca = () => {
 
       <span className="login-form-title">
         <img src={agupng} alt="Advocacia Geral da união" />
+      </span>
+
+      <span>
+        <div className='checkboxMinuta'>
+          <input
+            type="checkbox"
+            name="minuta"
+            id="minuta"
+            checked={minuta}
+            onChange={e => setMinuta(e.target.checked)}
+          />
+          <label htmlFor="minuta" className='minuta-question'>Deseja incluir os impeditivos na minuta?</label>
+        </div>
+        <br></br>
       </span>
 
       <div className="wrap-input">
